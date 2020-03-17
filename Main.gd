@@ -11,16 +11,13 @@ var minute = 0
 var second = 0
 
 var d = 0
+var ecl = 0
 var pi = 3.1415926
 
 ### Orbital elements
 
 var Bodies = ["Sun","Moon","Mercury","Venus","Mars","Jupiter","Saturn","Uranus","Neptune"]
 var InnerBodies = ["Mercury","Venus","Mars"]
-
-###
-
-var BodyPos = Vector2(0, 0)
 
 ### Intialize empty orbits dictionary
 var Orbits = {	
@@ -55,16 +52,25 @@ func _ready():
 	d = get_time()
 	get_orbital_elements(d)
 	
+	## Compute obliquity
+	ecl = 23.4393 - 0.0000003563*d
+	
+	## Calculate the sun's position relative to the earth
+	Positions["Sun"] = find_sun_position(Orbits["Sun"][0],Orbits["Sun"][1],Orbits["Sun"][2],Orbits["Sun"][3],Orbits["Sun"][4],Orbits["Sun"][5])
+	#print()
+	
+	## Reverse sun position to find position of earth relative to run
+	Positions["Earth"] = (-1.0)*Positions["Sun"]
+	
 	## Calculate body positions for inner planets (except earth)
 	for body in InnerBodies:
 		Positions[body] = find_body_position(Orbits[body][0],Orbits[body][1],Orbits[body][2],Orbits[body][3],Orbits[body][4],Orbits[body][5])
-		Positions[body] = Positions[body] * ScaleOrbit
-		print(body," x=",Positions[body][0]," ",body," y=",Positions[body][1])
 	
 	## Move planet sprites to their correct positions	
-	$Mercury.set_position(Positions["Mercury"])
-	$Venus.set_position(Positions["Venus"])
-	$Mars.set_position(Positions["Mars"])
+	$Mercury.set_position(Positions["Mercury"] * ScaleOrbit)
+	$Venus.set_position(Positions["Venus"] * ScaleOrbit)
+	$Earth.set_position(Positions["Earth"] * ScaleOrbit)
+	$Mars.set_position(Positions["Mars"] * ScaleOrbit)
 	
 	pass
 
@@ -211,9 +217,9 @@ func find_sun_position(N,i,w,a,e,M):
 	var xs = r * cos(lonsun)
 	var ys = r * sin(lonsun)
 	
-	#print("xs=",xs)
-	#print("ys=",ys)
-	pass
+	var BodyPos = Vector2(xs, ys)
+	
+	return BodyPos
 	
 func find_body_position(N,i,w,a,e,M):
 	# Compute the eccentric anomaly of the body
