@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Shaders/PulseGlow.shader" type="Shader" id=1]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 1 )
+shader_param/albedo = Color( 1, 1, 1, 1 )
+shader_param/Saturation = 1.0
+shader_param/PulseRate = 0.0
+shader_param/PulseIntensity = 0.1
+shader_param/Opacity = 1.0
+
+[node name="Spatial" type="Spatial"]
+
+[node name="InterpolatedCamera" type="InterpolatedCamera" parent="."]
+transform = Transform( 0.96188, 1.43331e-08, 0.273472, -0.109821, 0.915824, 0.386272, -0.250453, -0.40158, 0.880913, 0, 1.42904, 3.35191 )
+current = true
+target = NodePath("../CSGSphere")
+speed = 0.0
+enabled = true
+
+[node name="CSGSphere" type="CSGSphere" parent="."]
+radial_segments = 64
+rings = 32
+material = SubResource( 1 )
