@@ -17,7 +17,7 @@ var pi = 3.1415926
 ### Orbital elements
 
 var Bodies = ["Sun","Moon","Mercury","Venus","Mars","Jupiter","Saturn","Uranus","Neptune"]
-var InnerBodies = ["Mercury","Venus","Mars"]
+var Planets = ["Mercury","Venus","Mars","Jupiter","Saturn","Uranus","Neptune"]
 
 ### Intialize empty orbits dictionary
 var Orbits = {	
@@ -32,18 +32,31 @@ var Orbits = {
 	"Neptune": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
 }
 
-### Initialize empty position dictionary
-var Positions = {	
-	"Sun": Vector2(0.0, 0.0),
-	"Earth": Vector2(0.0, 0.0),
-	"Moon": Vector2(0.0, 0.0),
-	"Mercury": Vector2(0.0, 0.0),
-	"Venus": Vector2(0.0, 0.0),
-	"Mars": Vector2(0.0, 0.0),
-	"Jupiter": Vector2(0.0, 0.0),
-	"Saturn": Vector2(0.0, 0.0),
-	"Uranus": Vector2(0.0, 0.0),
-	"Neptune": Vector2(0.0, 0.0)
+### Initialize empty position dictionarys
+### Relative to the sun and relative to earth
+var PosRSun = {	
+	"Sun": Vector3(0.0,0.0,0.0),
+	"Earth": Vector3(0.0,0.0,0.0),
+	"Moon": Vector3(0.0,0.0,0.0),
+	"Mercury": Vector3(0.0,0.0,0.0),
+	"Venus": Vector3(0.0,0.0,0.0),
+	"Mars": Vector3(0.0,0.0,0.0),
+	"Jupiter": Vector3(0.0,0.0,0.0),
+	"Saturn": Vector3(0.0,0.0,0.0),
+	"Uranus": Vector3(0.0,0.0,0.0),
+	"Neptune": Vector3(0.0,0.0,0.0)
+}
+var PosREarth = {	
+	"Sun": Vector3(0.0,0.0,0.0),
+	"Earth": Vector3(0.0,0.0,0.0),
+	"Moon": Vector3(0.0,0.0,0.0),
+	"Mercury": Vector3(0.0,0.0,0.0),
+	"Venus": Vector3(0.0,0.0,0.0),
+	"Mars": Vector3(0.0,0.0,0.0),
+	"Jupiter": Vector3(0.0,0.0,0.0),
+	"Saturn": Vector3(0.0,0.0,0.0),
+	"Uranus": Vector3(0.0,0.0,0.0),
+	"Neptune": Vector3(0.0,0.0,0.0)
 }
 
 func _ready():
@@ -56,21 +69,31 @@ func _ready():
 	ecl = 23.4393 - 0.0000003563*d
 	
 	## Calculate the sun's position relative to the earth
-	Positions["Sun"] = find_sun_position(Orbits["Sun"][0],Orbits["Sun"][1],Orbits["Sun"][2],Orbits["Sun"][3],Orbits["Sun"][4],Orbits["Sun"][5])
+	PosRSun["Sun"] = find_sun_position(Orbits["Sun"][0],Orbits["Sun"][1],Orbits["Sun"][2],Orbits["Sun"][3],Orbits["Sun"][4],Orbits["Sun"][5])
 	#print()
 	
 	## Reverse sun position to find position of earth relative to run
-	Positions["Earth"] = (-1.0)*Positions["Sun"]
+	PosRSun["Earth"] = (-1.0)*PosRSun["Sun"]
 	
-	## Calculate body positions for inner planets (except earth)
-	for body in InnerBodies:
-		Positions[body] = find_body_position(Orbits[body][0],Orbits[body][1],Orbits[body][2],Orbits[body][3],Orbits[body][4],Orbits[body][5])
+	## Calculate body position for all planets (except earth), relative to the sun
+	for body in Planets:
+		var N = Orbits[body][0]
+		var i = Orbits[body][1]
+		var w = Orbits[body][2]
+		var a = Orbits[body][3]
+		var e = Orbits[body][4]
+		var M = Orbits[body][5]
+		PosRSun[body] = find_body_position(N,i,w,a,e,M)
 	
-	## Move planet sprites to their correct positions	
-	$Mercury.set_position(Positions["Mercury"] * ScaleOrbit)
-	$Venus.set_position(Positions["Venus"] * ScaleOrbit)
-	$Earth.set_position(Positions["Earth"] * ScaleOrbit)
-	$Mars.set_position(Positions["Mars"] * ScaleOrbit)
+	## Move planet sprites to their correct PosRSun	
+	$Mercury.set_position(PosRSun["Mercury"] * ScaleOrbit)
+	$Venus.set_position(PosRSun["Venus"] * ScaleOrbit)
+	$Earth.set_position(PosRSun["Earth"] * ScaleOrbit)
+	$Mars.set_position(PosRSun["Mars"] * ScaleOrbit)
+	$Jupiter.set_position(PosRSun["Jupiter"] * ScaleOrbit)
+	$Saturn.set_position(PosRSun["Saturn"] * ScaleOrbit)
+	$Neptune.set_position(PosRSun["Neptune"] * ScaleOrbit)
+	$Uranus.set_position(PosRSun["Uranus"] * ScaleOrbit)
 	
 	pass
 
@@ -248,7 +271,43 @@ func find_body_position(N,i,w,a,e,M):
 	var BodyPos = Vector2(xh, yh)
 	
 	return BodyPos
+	
+func correct_Jupiter_longitude(longitude,Mj,Ms):
+	var corrected_longitude = longitude + \
+		-0.332 * sin(2*Mj - 5*Ms - deg2rad(67.6)) \
+		-0.056 * sin(2*Mj - 2*Ms + deg2rad(21)) \
+		+0.042 * sin(3*Mj - 5*Ms + deg2rad(21)) \
+		-0.036 * sin(Mj - 2*Ms) \
+		+0.022 * cos(Mj - Ms) \
+		+0.023 * sin(2*Mj - 3*Ms + deg2rad(52)) \
+		-0.016 * sin(Mj - 5*Ms - deg2rad(69))
+	
+	return corrected_longitude
+	
+func correct_Saturn_longitude(longitude,Mj,Ms):
+	var corrected_longitude = longitude + \
+		+0.812 * sin(2*Mj - 5*Ms - deg2rad(67.6)) \
+		-0.229 * cos(2*Mj - 4*Ms - deg2rad(2)) \
+		+0.119 * sin(Mj - 2*Ms - deg2rad(3)) \
+		+0.046 * sin(2*Mj - 6*Ms - deg2rad(69)) \
+		+0.014 * sin(Mj - 3*Ms + deg2rad(32))
+	
+	return corrected_longitude
 
+func correct_Saturn_latitude(latitude,Mj,Ms):
+	var corrected_latitude = latitude + \
+		-0.020 * cos(2*Mj - 4*Ms - deg2rad(2)) \
+		+0.018 * sin(2*Mj - 6*Ms - deg2rad(49))
+	
+	return corrected_latitude
+
+func correct_Uranus_longitude(longitude,Mj,Ms,Mu):
+	var corrected_longitude = longitude + \
+		+0.040 * sin(Ms - 2*Mu + deg2rad(6)) \
+		+0.035 * sin(Ms - 3*Mu + deg2rad(33)) \
+		-0.015 * sin(Mj - Mu + deg2rad(20))
+	
+	return corrected_longitude
 
 #func create_calender(StartingYear, EndingYear):
 #	var months = ["Jan","Feb","March","Apr","May","June","July","Aug","Sep","Oct","Nov","Dec"]

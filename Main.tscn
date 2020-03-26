@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Artwork/Icons/Vector/planet_mercury.svg" type="Texture" id=1]
 [ext_resource path="res://Artwork/Icons/Vector/planet_sun.svg" type="Texture" id=2]
@@ -7,12 +7,18 @@
 [ext_resource path="res://Artwork/Icons/Vector/planet_mars.svg" type="Texture" id=5]
 [ext_resource path="res://Artwork/Icons/Vector/planet_earth.svg" type="Texture" id=6]
 [ext_resource path="res://GridShader.gd" type="Script" id=7]
+[ext_resource path="res://Artwork/Icons/Vector/planet_saturn.svg" type="Texture" id=8]
+[ext_resource path="res://Artwork/Icons/Vector/planet_uranus.svg" type="Texture" id=9]
+[ext_resource path="res://Artwork/Icons/Vector/planet_neptune.svg" type="Texture" id=10]
+[ext_resource path="res://Artwork/Icons/Vector/planet_jupiter.svg" type="Texture" id=11]
+[ext_resource path="res://Camera.gd" type="Script" id=12]
 
 [node name="Scene" type="Node2D"]
 script = ExtResource( 3 )
 
 [node name="Camera" type="Camera2D" parent="."]
 current = true
+script = ExtResource( 12 )
 
 [node name="GridShader" type="Node2D" parent="."]
 script = ExtResource( 7 )
@@ -115,3 +121,19 @@ texture = ExtResource( 6 )
 [node name="Mars" type="Sprite" parent="."]
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 5 )
+
+[node name="Jupiter" type="Sprite" parent="."]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 11 )
+
+[node name="Saturn" type="Sprite" parent="."]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 8 )
+
+[node name="Neptune" type="Sprite" parent="."]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 10 )
+
+[node name="Uranus" type="Sprite" parent="."]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 9 )
