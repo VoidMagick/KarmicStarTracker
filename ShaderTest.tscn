@@ -2,14 +2,17 @@
 
 [ext_resource path="res://Artwork/Icons/Vector/planet_sun.svg" type="Texture" id=1]
 
-[sub_resource type="Shader" id=5]
+[sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
 
+// Adjust these artistically
 uniform vec3 sun_color = vec3(1.0,1.0,0.0);
 uniform float sun_radius = 0.25;
 uniform float sun_corona_length = 0.02;
 uniform float corona_wave_count = 10.0;
 uniform float corona_omega = 2.0;
+
+// Other constants -- probably do not touch
 uniform float PI = 3.1415926;
 
 void fragment(){
@@ -36,25 +39,34 @@ void fragment(){
 	// Lets color that baby up now
 	COLOR = vec4(colorf1,alphaf1);
 	
-	// Another experiment
-	float scale = 2.0; // currently scale and amplitude are backwards
-	float amplitude = 0.025;
+	// WAVE FUNCTION #1
+	float amp = 2.0;	// wave function amplitude
+	float scale = 0.025;	// scaling of the wave circle
 	float thickness = 0.001;
 	
 	vec2 position = UV - 0.5;
-	float testies = smoothstep(thickness, thickness*10.0, abs(pct - (16.0 + scale*sin(atan(position.y, position.x) * corona_wave_count - TIME*corona_omega)) * amplitude));
+	
+	float wavefunc1 = abs(pct - (16.0 + amp*sin(atan(position.y, position.x) * corona_wave_count - TIME*corona_omega*-1.0)) * scale);
+	float testies = smoothstep(thickness,thickness*10.0,wavefunc1);
 	testies = 1.0 - testies;
 	vec3 color3 = vec3(testies); // * sun_color;
 	float alpha3 = testies * 0.9;
-	//COLOR = vec4(color3,alpha3);
+	COLOR = vec4(color3,alpha3);
 	
-	vec3 colorf2 = color + color2 + color3;
-	float alphaf2 = alpha + alpha2 + alpha3;
-	COLOR = vec4(colorf2,alphaf2);
+	// WAVE FUNCTION #2
+	float wavefunc2 = abs(pct - (16.0 + amp*sin(atan(position.y, position.x) * corona_wave_count - TIME*corona_omega)) * scale);
+	testies = smoothstep(thickness, thickness*10.0,wavefunc2);
+	testies = 1.0 - testies;
+	vec3 color4 = vec3(testies); // * sun_color;
+	float alpha4 = testies * 0.9;
+	
+	vec3 colorf2 = color + color2 + color3 + color4;
+	float alphaf2 = alpha + alpha2 + alpha3 + alpha4;
+	//COLOR = vec4(colorf2,alphaf2);
 }"
 
-[sub_resource type="ShaderMaterial" id=4]
-shader = SubResource( 5 )
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
 shader_param/sun_color = Vector3( 1, 1, 0 )
 shader_param/sun_radius = 0.25
 shader_param/sun_corona_length = 0.02
@@ -69,6 +81,6 @@ current = true
 zoom = Vector2( 0.2, 0.2 )
 
 [node name="Sprite" type="Sprite" parent="."]
-material = SubResource( 4 )
+material = SubResource( 2 )
 scale = Vector2( 1.6, 1.6 )
 texture = ExtResource( 1 )
