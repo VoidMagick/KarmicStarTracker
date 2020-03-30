@@ -16,28 +16,19 @@ uniform float corona_omega = 2.0;
 uniform float PI = 3.1415926;
 
 void fragment(){
+	vec3 finalcolor = vec3(0.0);
+	float finalalpha = 1.0;
 	
 	// Position of each pixel from the center as a percentage
 	float pct = distance(UV,vec2(0.5));
 	
 	// Drawing the basic sun circle
-	float pct_step = smoothstep(sun_radius+sun_corona_length,sun_radius-sun_corona_length,pct);
-	vec3 color = vec3(pct_step);
-	color = color * sun_color;
-	float alpha = pct_step;
+	float sun = smoothstep(sun_radius+sun_corona_length,sun_radius-sun_corona_length,pct);
+	finalcolor += vec3(sun);
 	
 	// Add some more sun glow
-	float pct_step2 = smoothstep(sun_radius+0.2,sun_radius,pct);
-	vec3 color2 = vec3(pct_step2);
-	color2 = color2 * sun_color;
-	float alpha2 = pct_step2*0.3;
-	
-	// Test - try putting them together
-	vec3 colorf1 = color + color2;
-	float alphaf1 = alpha + alpha2;
-	
-	// Lets color that baby up now
-	COLOR = vec4(colorf1,alphaf1);
+	float corona = smoothstep(sun_radius+0.2,sun_radius,pct);
+	finalcolor += vec3(corona)*0.7;
 	
 	// WAVE FUNCTION #1
 	float amp = 2.0;	// wave function amplitude
@@ -46,23 +37,13 @@ void fragment(){
 	
 	vec2 position = UV - 0.5;
 	
-	float wavefunc1 = abs(pct - (16.0 + amp*sin(atan(position.y, position.x) * corona_wave_count - TIME*corona_omega*-1.0)) * scale);
-	float testies = smoothstep(thickness,thickness*10.0,wavefunc1);
-	testies = 1.0 - testies;
-	vec3 color3 = vec3(testies); // * sun_color;
-	float alpha3 = testies * 0.9;
-	COLOR = vec4(color3,alpha3);
+	float wavefunc1 = (pct - (16.0 + amp*sin(atan(position.y, position.x) * corona_wave_count - TIME*corona_omega*-1.0)) * scale);
+	float smoothwave1 = (1.0 - smoothstep(thickness,thickness*50.0,wavefunc1))*0.2;
+	finalcolor += vec3(smoothwave1); // * sun_color;
+	float alpha3 = smoothwave1;
 	
-	// WAVE FUNCTION #2
-	float wavefunc2 = abs(pct - (16.0 + amp*sin(atan(position.y, position.x) * corona_wave_count - TIME*corona_omega)) * scale);
-	testies = smoothstep(thickness, thickness*10.0,wavefunc2);
-	testies = 1.0 - testies;
-	vec3 color4 = vec3(testies); // * sun_color;
-	float alpha4 = testies * 0.9;
-	
-	vec3 colorf2 = color + color2 + color3 + color4;
-	float alphaf2 = alpha + alpha2 + alpha3 + alpha4;
-	//COLOR = vec4(colorf2,alphaf2);
+	// Color that baby up
+	COLOR = vec4(finalcolor,1.0);
 }"
 
 [sub_resource type="ShaderMaterial" id=2]

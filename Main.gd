@@ -1,8 +1,5 @@
 extends Node2D
 
-### Variables for scaling appearance
-var ScaleOrbit = 200
-
 var year = 0
 var month = 0
 var day = 0
@@ -19,6 +16,39 @@ var pi = 3.1415926
 var Bodies = ["Sun","Moon","Mercury","Venus","Mars","Jupiter","Saturn","Uranus","Neptune"]
 var Planets = ["Mercury","Venus","Mars","Jupiter","Saturn","Uranus","Neptune"]
 
+### Sprites, Scaling values
+
+var BodySprites = {
+	"Earth": "res://Artwork/Icons/Vector/planet_earth.svg",
+	"Mercury": "res://Artwork/Icons/Vector/planet_mercury.svg",
+	"Venus": "res://Artwork/Icons/Vector/planet_venus.svg",
+	"Mars": "res://Artwork/Icons/Vector/planet_mars.svg",
+	"Jupiter": "res://Artwork/Icons/Vector/planet_jupiter.svg",
+	"Saturn": "res://Artwork/Icons/Vector/planet_saturn.svg",
+	"Uranus": "res://Artwork/Icons/Vector/planet_uranus.svg",
+	"Neptune": "res://Artwork/Icons/Vector/planet_neptune.svg"
+}
+var BodyScales = {
+	"Earth": 0.40,
+	"Mercury": 0.20,
+	"Venus": 0.38,
+	"Mars": 0.25,
+	"Jupiter": 1.00,
+	"Saturn": 0.58,
+	"Uranus": 0.54,
+	"Neptune": 0.60
+}
+var OrbitScales = {
+	"Earth": 100.0,
+	"Mercury": 100.0,
+	"Venus": 100.0,
+	"Mars": 100.0,
+	"Jupiter": 35.0,
+	"Saturn": 25.0,
+	"Uranus": 15.0,
+	"Neptune": 15.0
+}
+
 ### Intialize empty orbits dictionary
 var Orbits = {	
 	"Sun": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
@@ -33,7 +63,7 @@ var Orbits = {
 }
 
 ### Initialize empty position dictionarys
-### Relative to the sun and relative to earth
+### Relative to the sun, relative to earth, and scaled to draw
 var PosRSun = {	
 	"Sun": Vector3(0.0,0.0,0.0),
 	"Earth": Vector3(0.0,0.0,0.0),
@@ -47,6 +77,18 @@ var PosRSun = {
 	"Neptune": Vector3(0.0,0.0,0.0)
 }
 var PosREarth = {	
+	"Sun": Vector3(0.0,0.0,0.0),
+	"Earth": Vector3(0.0,0.0,0.0),
+	"Moon": Vector3(0.0,0.0,0.0),
+	"Mercury": Vector3(0.0,0.0,0.0),
+	"Venus": Vector3(0.0,0.0,0.0),
+	"Mars": Vector3(0.0,0.0,0.0),
+	"Jupiter": Vector3(0.0,0.0,0.0),
+	"Saturn": Vector3(0.0,0.0,0.0),
+	"Uranus": Vector3(0.0,0.0,0.0),
+	"Neptune": Vector3(0.0,0.0,0.0)
+}
+var PosDraw = {	
 	"Sun": Vector3(0.0,0.0,0.0),
 	"Earth": Vector3(0.0,0.0,0.0),
 	"Moon": Vector3(0.0,0.0,0.0),
@@ -84,24 +126,29 @@ func _ready():
 		var e = Orbits[body][4]
 		var M = Orbits[body][5]
 		PosRSun[body] = find_body_position(N,i,w,a,e,M)
+		draw_body(body,OrbitScales[body],BodySprites[body],BodyScales[body])
+	
+	## Draw earth
+	var body = "Earth"
+	draw_body(body,OrbitScales[body],BodySprites[body],BodyScales[body])
 	
 	## Move planet sprites to their correct PosRSun	
-	$Mercury.set_position(PosRSun["Mercury"] * ScaleOrbit)
-	$Venus.set_position(PosRSun["Venus"] * ScaleOrbit)
-	$Earth.set_position(PosRSun["Earth"] * ScaleOrbit)
-	$Mars.set_position(PosRSun["Mars"] * ScaleOrbit)
-	$Jupiter.set_position(PosRSun["Jupiter"] * ScaleOrbit)
-	$Saturn.set_position(PosRSun["Saturn"] * ScaleOrbit)
-	$Neptune.set_position(PosRSun["Neptune"] * ScaleOrbit)
-	$Uranus.set_position(PosRSun["Uranus"] * ScaleOrbit)
+#	$Mercury.set_position(PosRSun["Mercury"] * ScaleOrbit)
+#	$Venus.set_position(PosRSun["Venus"] * ScaleOrbit)
+#	$Earth.set_position(PosRSun["Earth"] * ScaleOrbit)
+#	$Mars.set_position(PosRSun["Mars"] * ScaleOrbit)
+#	$Jupiter.set_position(PosRSun["Jupiter"] * ScaleOrbit)
+#	$Saturn.set_position(PosRSun["Saturn"] * ScaleOrbit)
+#	$Neptune.set_position(PosRSun["Neptune"] * ScaleOrbit)
+#	$Uranus.set_position(PosRSun["Uranus"] * ScaleOrbit)
 	
 	pass
 
 func _process(_delta):
 	pass
 
-func datetime_to_numtime(yr,mth,day,hr,mn,sc):
-	var numtime = 367*yr - 7*(yr+(mth+9)/12)/4 - 3*((yr+(mth-9)/7)/100+1)/4 + 275*mth/9 + day - 730515 + (hr+(mn+sc/60.0)/60.0)/24.0
+func datetime_to_numtime(yr,mth,dy,hr,mn,sc):
+	var numtime = 367*yr - 7*(yr+(mth+9)/12)/4 - 3*((yr+(mth-9)/7)/100+1)/4 + 275*mth/9 + dy - 730515 + (hr+(mn+sc/60.0)/60.0)/24.0
 	return numtime
 
 func get_time():
@@ -126,7 +173,7 @@ func get_time():
 	
 	return numtime
 	
-func get_orbital_elements(d):
+func get_orbital_elements(dd):
 	
 	### Values for N, i, w and M (0,1,2,5) are calculated here as degrees
 	
@@ -135,19 +182,19 @@ func get_orbital_elements(d):
 		"Sun": [
 			0.0,
 			0.0,
-			282.9404 + 0.0000470935 * d,
+			282.9404 + 0.0000470935 * dd,
 			1.0,
 			0.016709,
-			fposmod(356.0470 + 0.9856002585 * d, 360)
+			fposmod(356.0470 + 0.9856002585 * dd, 360)
 			],
 	
 		"Moon": [
-			125.1228 - 0.0529538083 * d,
+			125.1228 - 0.0529538083 * dd,
 			5.1454,
-			fposmod(318.0634 + 0.1643573223 * d, 360),
+			fposmod(318.0634 + 0.1643573223 * dd, 360),
 			60.2666,
 			0.054900,
-			fposmod(115.3654 + 13.0649929509 * d, 360)
+			fposmod(115.3654 + 13.0649929509 * dd, 360)
 			],
 	
 		"Mercury": [
@@ -156,61 +203,61 @@ func get_orbital_elements(d):
 			29.1241,
 			0.387098,
 			0.205635,
-			fposmod(168.6562 + 4.0923344368 * d, 360)
+			fposmod(168.6562 + 4.0923344368 * dd, 360)
 		],
 	
 		"Venus": [
-			76.6799 + 0.0000246590 * d,
+			76.6799 + 0.0000246590 * dd,
 			3.3946,
-			54.8910 + 0.0000138374 * d,
+			54.8910 + 0.0000138374 * dd,
 			0.723330,
 			0.006773,
-			fposmod(48.0052 + 1.6021302244 * d, 360)
+			fposmod(48.0052 + 1.6021302244 * dd, 360)
 		],
 	
 		"Mars": [
-			49.5574 + 0.0000211081 * d,
+			49.5574 + 0.0000211081 * dd,
 			1.8497,
-			286.5016 + 0.0000292961 * d,
+			286.5016 + 0.0000292961 * dd,
 			1.523688,
 			0.093405,
-			fposmod(18.6021 + 0.5240207766 * d, 360)
+			fposmod(18.6021 + 0.5240207766 * dd, 360)
 		],
 	
 		"Jupiter": [
-			100.4542 + 0.0000276854 * d,
+			100.4542 + 0.0000276854 * dd,
 			1.3030,
-			273.8777 + 0.0000164505 * d,
+			273.8777 + 0.0000164505 * dd,
 			5.20256,
 			0.048498,
-			fposmod(19.8950 + 0.0830853001 * d, 360)
+			fposmod(19.8950 + 0.0830853001 * dd, 360)
 		],
 	
 		"Saturn": [
-			113.6634 + 0.000023898 * d,
+			113.6634 + 0.000023898 * dd,
 			2.4886,
-			339.3939 + 0.0000297661 * d,
+			339.3939 + 0.0000297661 * dd,
 			9.55475,
 			0.055546,
-			fposmod(316.9670 + 0.0334442282 * d, 360)
+			fposmod(316.9670 + 0.0334442282 * dd, 360)
 		],
 	
 		"Uranus": [
-			74.0005 + 0.000013978 * d,
+			74.0005 + 0.000013978 * dd,
 			0.7733,
-			96.6612 + 0.000030565 * d,
+			96.6612 + 0.000030565 * dd,
 			19.18171,
 			0.047318,
-			fposmod(142.5905 + 0.011725806 * d, 360)
+			fposmod(142.5905 + 0.011725806 * dd, 360)
 		],
 	
 		"Neptune": [
-			131.7806 + 0.000030173 * d,
+			131.7806 + 0.000030173 * dd,
 			1.7700,
 			272.8461,
 			30.05826,
 			0.008606,
-			fposmod(260.2471 + 0.005995147 * d, 360)
+			fposmod(260.2471 + 0.005995147 * dd, 360)
 		],
 		
 	}
@@ -223,7 +270,7 @@ func get_orbital_elements(d):
 	
 	pass
 	
-func find_sun_position(N,i,w,a,e,M):
+func find_sun_position(_N,_i,w,_a,e,M):
 	# Compute the eccentric anomaly of the sun
 	var E = M + e * sin(M) * (1.0 + e*cos(M))
 	
@@ -266,7 +313,7 @@ func find_body_position(N,i,w,a,e,M):
 	# Compute the body's position in space
 	var xh = r * (cos(N) * cos(v+w) - sin(N) * sin(v+w) * cos(i))
 	var yh = r * (sin(N) * cos(v+w) + cos(N) * sin(v+w) * cos(i))
-	var zh = r * (sin(v+w) * sin(i)) # Depth calculated but not used for 2D
+	var _zh = r * (sin(v+w) * sin(i)) # Depth calculated but not used for 2D
 	
 	var BodyPos = Vector2(xh, yh)
 	
@@ -308,6 +355,16 @@ func correct_Uranus_longitude(longitude,Mj,Ms,Mu):
 		-0.015 * sin(Mj - Mu + deg2rad(20))
 	
 	return corrected_longitude
+
+func draw_body(body,scale,texturepath,bodyscale):
+	var BodySprite = Sprite.new()
+	BodySprite.set_name(body)
+	add_child(BodySprite)
+	BodySprite.set_position(PosRSun[body]*scale)
+	var BodyTexture = load(texturepath)
+	BodySprite.set_texture(BodyTexture)
+	BodySprite.set_scale(Vector2(bodyscale,bodyscale))
+	pass
 
 #func create_calender(StartingYear, EndingYear):
 #	var months = ["Jan","Feb","March","Apr","May","June","July","Aug","Sep","Oct","Nov","Dec"]

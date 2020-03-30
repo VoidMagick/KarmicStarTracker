@@ -10,7 +10,7 @@ func _draw():
 	
 	# Draw the grid circles
 	for n in range(50,GridRadius,RSteps):
-		draw_arc(Vector2(0,0),n,0,2*PI,PI*n,GridColor,1.0,true)
+		draw_arc(Vector2(0,0),n,0,2.0*PI,PI*float(n),GridColor,1.0,true)
 	
 	# Draw the grid lines
 	for theta in range(0,360,ThetaSteps):

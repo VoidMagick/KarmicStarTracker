@@ -19,10 +19,14 @@ config/name="KarmicStarTracker"
 run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
 
+[display]
+
+window/size/height=1024
+
 [rendering]
 
 quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
 vram_compression/import_etc2=false
-environment/default_clear_color=Color( 0.32549, 0.207843, 0.4, 1 )
+environment/default_clear_color=Color( 0, 0, 0, 1 )
 environment/default_environment="res://default_env.tres"

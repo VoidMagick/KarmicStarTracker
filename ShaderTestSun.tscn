@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Shaders/2D_animated_sun.shader" type="Shader" id=1]
+[ext_resource path="res://Artwork/Icons/Vector/planet_sun.svg" type="Texture" id=2]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 1 )
+shader_param/yellow1 = Vector3( 1, 0.9, 0.4 )
+shader_param/orange1 = Vector3( 1, 0.9, 0.4 )
+shader_param/red1 = Vector3( 1, 0.3, 0.2 )
+shader_param/sun_radius = 0.25
+shader_param/sun_corona_length = 0.02
+shader_param/PI = 3.14159
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.2, 0.2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+material = SubResource( 1 )
+scale = Vector2( 1.6, 1.6 )
+texture = ExtResource( 2 )
