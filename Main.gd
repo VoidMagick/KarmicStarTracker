@@ -6,7 +6,7 @@ var pi = 3.1415926
 
 ### Orbital elements
 
-var Bodies = ["Sun","Moon","Mercury","Venus","Mars","Jupiter","Saturn","Uranus","Neptune"]
+var Bodies = ["Sun","Earth","Mercury","Venus","Mars","Jupiter","Saturn","Uranus","Neptune"]
 var Planets = ["Mercury","Venus","Mars","Jupiter","Saturn","Uranus","Neptune"]
 
 ### Sprites, Scaling values
@@ -22,6 +22,7 @@ var BodySprites = {
 	"Neptune": "res://Artwork/Icons/Vector/planet_neptune.svg"
 }
 var BodyScales = {
+	"Sun": 1.00,
 	"Earth": 0.40,
 	"Mercury": 0.20,
 	"Venus": 0.38,
@@ -32,6 +33,7 @@ var BodyScales = {
 	"Neptune": 0.60
 }
 var OrbitScales = {
+	"Sun": 0.0,
 	"Earth": 100.0,
 	"Mercury": 100.0,
 	"Venus": 100.0,
@@ -45,6 +47,7 @@ var OrbitScales = {
 ### Intialize empty orbits dictionary
 var Orbits = {	
 	"Sun": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+	"Earth": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
 	"Moon": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
 	"Mercury": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
 	"Venus": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
@@ -70,16 +73,16 @@ var PosRSun = {
 	"Neptune": Vector3(0.0,0.0,0.0)
 }
 var PosREarth = {	
-	"Sun": Vector3(0.0,0.0,0.0),
-	"Earth": Vector3(0.0,0.0,0.0),
-	"Moon": Vector3(0.0,0.0,0.0),
-	"Mercury": Vector3(0.0,0.0,0.0),
-	"Venus": Vector3(0.0,0.0,0.0),
-	"Mars": Vector3(0.0,0.0,0.0),
-	"Jupiter": Vector3(0.0,0.0,0.0),
-	"Saturn": Vector3(0.0,0.0,0.0),
-	"Uranus": Vector3(0.0,0.0,0.0),
-	"Neptune": Vector3(0.0,0.0,0.0)
+	"Sun": Vector2(0.0,0.0),
+	"Earth": Vector2(0.0,0.0),
+	"Moon": Vector2(0.0,0.0),
+	"Mercury": Vector2(0.0,0.0),
+	"Venus": Vector2(0.0,0.0),
+	"Mars": Vector2(0.0,0.0),
+	"Jupiter": Vector2(0.0,0.0),
+	"Saturn": Vector2(0.0,0.0),
+	"Uranus": Vector2(0.0,0.0),
+	"Neptune": Vector2(0.0,0.0)
 }
 var PosDraw = {	
 	"Sun": Vector3(0.0,0.0,0.0),
@@ -166,6 +169,15 @@ func get_orbital_elements(dd):
 			1.0,
 			0.016709,
 			fposmod(356.0470 + 0.9856002585 * dd, 360)
+			],
+		
+		"Earth": [
+			0.0,
+			0.0,
+			0.0,
+			0.0,
+			0.0,
+			0.0
 			],
 	
 		"Moon": [
@@ -381,8 +393,21 @@ func interface_centric_selection():
 	add_child(ChooseCentric)
 	ChooseCentric.add_item("Heliocentric")
 	ChooseCentric.add_item("Geocentric")
+	ChooseCentric.connect("item_selected",self,"change_centric")
 	
 	pass
+
+func change_centric(id):
+	if not id:
+		print("Heliocentric")
+		for body in Bodies:
+			var BodySprite = get_node(body)
+			BodySprite.set_position(PosRSun[body]*OrbitScales[body])
+	elif id:
+		print("Geocentric")
+		for body in Bodies:
+			var BodySprite = get_node(body)
+			BodySprite.set_position(PosREarth[body]*OrbitScales[body])
 
 func time_current():
 	pass
