@@ -1,19 +1,18 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Shaders/2d_circular_grid.shader" type="Shader" id=1]
 [ext_resource path="res://Artwork/Icons/Vector/planet_sun.svg" type="Texture" id=2]
 [ext_resource path="res://Main.gd" type="Script" id=3]
-[ext_resource path="res://Camera.gd" type="Script" id=12]
 [ext_resource path="res://Shaders/2D_animated_sun.shader" type="Shader" id=13]
 
-[sub_resource type="ShaderMaterial" id=2]
+[sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 1 )
 shader_param/opacity = 0.5
 shader_param/cyan = Vector3( 0, 1, 1 )
 shader_param/green = Vector3( 0, 1, 0 )
 shader_param/PI = 3.14159
 
-[sub_resource type="ShaderMaterial" id=1]
+[sub_resource type="ShaderMaterial" id=2]
 shader = ExtResource( 13 )
 shader_param/yellow1 = Vector3( 1, 0.9, 0.4 )
 shader_param/orange1 = Vector3( 1, 0.9, 0.4 )
@@ -25,95 +24,14 @@ shader_param/PI = 3.14159
 [node name="Scene" type="Node2D"]
 script = ExtResource( 3 )
 
-[node name="Sprite" type="Sprite" parent="."]
-material = SubResource( 2 )
+[node name="GridShader" type="Sprite" parent="."]
+material = SubResource( 1 )
 scale = Vector2( 22, 22 )
 texture = ExtResource( 2 )
 
 [node name="Camera" type="Camera2D" parent="."]
 current = true
-script = ExtResource( 12 )
-
-[node name="CurrentDateTime" type="GridContainer" parent="."]
-margin_left = -504.0
-margin_top = -504.0
-margin_right = -208.0
-margin_bottom = -96.0
-columns = 6
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="CurrentDateTime"]
-margin_right = 27.0
-margin_bottom = 14.0
-text = "Year"
-
-[node name="Label2" type="Label" parent="CurrentDateTime"]
-margin_left = 31.0
-margin_right = 72.0
-margin_bottom = 14.0
-text = "Month"
-
-[node name="Label3" type="Label" parent="CurrentDateTime"]
-margin_left = 76.0
-margin_right = 100.0
-margin_bottom = 14.0
-text = "Day"
-
-[node name="Label4" type="Label" parent="CurrentDateTime"]
-margin_left = 104.0
-margin_right = 135.0
-margin_bottom = 14.0
-text = "Hour"
-
-[node name="Label5" type="Label" parent="CurrentDateTime"]
-margin_left = 139.0
-margin_right = 184.0
-margin_bottom = 14.0
-text = "Minute"
-
-[node name="Label6" type="Label" parent="CurrentDateTime"]
-margin_left = 188.0
-margin_right = 234.0
-margin_bottom = 14.0
-text = "Second"
-
-[node name="VarYear" type="Label" parent="CurrentDateTime"]
-margin_top = 18.0
-margin_right = 27.0
-margin_bottom = 32.0
-
-[node name="VarMonth" type="Label" parent="CurrentDateTime"]
-margin_left = 31.0
-margin_top = 18.0
-margin_right = 72.0
-margin_bottom = 32.0
-
-[node name="VarDay" type="Label" parent="CurrentDateTime"]
-margin_left = 76.0
-margin_top = 18.0
-margin_right = 100.0
-margin_bottom = 32.0
-
-[node name="VarHour" type="Label" parent="CurrentDateTime"]
-margin_left = 104.0
-margin_top = 18.0
-margin_right = 135.0
-margin_bottom = 32.0
-
-[node name="VarMinute" type="Label" parent="CurrentDateTime"]
-margin_left = 139.0
-margin_top = 18.0
-margin_right = 184.0
-margin_bottom = 32.0
-
-[node name="VarSecond" type="Label" parent="CurrentDateTime"]
-margin_left = 188.0
-margin_top = 18.0
-margin_right = 234.0
-margin_bottom = 32.0
 
 [node name="Sun" type="Sprite" parent="."]
-material = SubResource( 1 )
+material = SubResource( 2 )
 texture = ExtResource( 2 )

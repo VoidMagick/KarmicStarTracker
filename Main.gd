@@ -1,12 +1,5 @@
 extends Node2D
 
-var year = 0
-var month = 0
-var day = 0
-var hour = 0
-var minute = 0
-var second = 0
-
 var d = 0
 var ecl = 0
 var pi = 3.1415926
@@ -107,6 +100,10 @@ func _ready():
 	d = get_time()
 	get_orbital_elements(d)
 	
+	## Create the interface
+	interface_centric_selection()
+	interface_time_selection()
+	
 	## Compute obliquity
 	ecl = 23.4393 - 0.0000003563*d
 	
@@ -132,16 +129,6 @@ func _ready():
 	var body = "Earth"
 	draw_body(body,OrbitScales[body],BodySprites[body],BodyScales[body])
 	
-	## Move planet sprites to their correct PosRSun	
-#	$Mercury.set_position(PosRSun["Mercury"] * ScaleOrbit)
-#	$Venus.set_position(PosRSun["Venus"] * ScaleOrbit)
-#	$Earth.set_position(PosRSun["Earth"] * ScaleOrbit)
-#	$Mars.set_position(PosRSun["Mars"] * ScaleOrbit)
-#	$Jupiter.set_position(PosRSun["Jupiter"] * ScaleOrbit)
-#	$Saturn.set_position(PosRSun["Saturn"] * ScaleOrbit)
-#	$Neptune.set_position(PosRSun["Neptune"] * ScaleOrbit)
-#	$Uranus.set_position(PosRSun["Uranus"] * ScaleOrbit)
-	
 	pass
 
 func _process(_delta):
@@ -155,19 +142,12 @@ func get_time():
 	
 	var datetimeDict = OS.get_datetime()
 	
-	year = datetimeDict.year
-	month = datetimeDict.month
-	day = datetimeDict.day
-	hour = datetimeDict.hour
-	minute = datetimeDict.minute
-	second = datetimeDict.second
-	
-	$"/root/Scene/CurrentDateTime/VarYear".set_text(str(year))
-	$"/root/Scene/CurrentDateTime/VarMonth".set_text(str(month))
-	$"/root/Scene/CurrentDateTime/VarDay".set_text(str(day))
-	$"/root/Scene/CurrentDateTime/VarHour".set_text(str(hour))
-	$"/root/Scene/CurrentDateTime/VarMinute".set_text(str(minute))
-	$"/root/Scene/CurrentDateTime/VarSecond".set_text(str(second))
+	var year = datetimeDict.year
+	var month = datetimeDict.month
+	var day = datetimeDict.day
+	var hour = datetimeDict.hour
+	var minute = datetimeDict.minute
+	var second = datetimeDict.second
 	
 	var numtime = datetime_to_numtime(year,month,day,hour,minute,second)
 	
@@ -364,6 +344,50 @@ func draw_body(body,scale,texturepath,bodyscale):
 	var BodyTexture = load(texturepath)
 	BodySprite.set_texture(BodyTexture)
 	BodySprite.set_scale(Vector2(bodyscale,bodyscale))
+	pass
+
+func interface_time_selection():
+	## Create the first grid container
+	var MainDateGrid = GridContainer.new()
+	MainDateGrid.set_name("MainDateGrid")
+	add_child(MainDateGrid)
+	MainDateGrid.set_columns(1)
+	MainDateGrid.set_position(Vector2(-500,-500))
+	
+	## Top of the grid is a combo box
+	var ChooseTimeType = OptionButton.new()
+	ChooseTimeType.set_name("ChooseTimeType")
+	MainDateGrid.add_child(ChooseTimeType)
+	ChooseTimeType.add_item("Current Time")
+	ChooseTimeType.add_item("Custom Time")
+	
+	## Bottom is another grid
+	var DateSelectGrid = GridContainer.new()
+	DateSelectGrid.set_name("DateSelectGrid")
+	MainDateGrid.add_child(DateSelectGrid)
+	DateSelectGrid.set_columns(5)
+	
+	for text in ["Year","Month","Day","Hour","Minute"]:
+		var newlabel = Label.new()
+		newlabel.set_name(text)
+		newlabel.set_text(text)
+		DateSelectGrid.add_child(newlabel)
+	pass
+
+func interface_centric_selection():
+	var ChooseCentric = OptionButton.new()
+	ChooseCentric.set_name("ChooseCentric")
+	ChooseCentric.set_position(Vector2(0,-500))
+	add_child(ChooseCentric)
+	ChooseCentric.add_item("Heliocentric")
+	ChooseCentric.add_item("Geocentric")
+	
+	pass
+
+func time_current():
+	pass
+	
+func time_custom():
 	pass
 
 #func create_calender(StartingYear, EndingYear):
