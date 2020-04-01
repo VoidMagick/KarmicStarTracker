@@ -96,18 +96,6 @@ var PosREarth = {
 	"Uranus": Vector2(0.0,0.0),
 	"Neptune": Vector2(0.0,0.0)
 }
-var PosDraw = {	
-	"Sun": Vector3(0.0,0.0,0.0),
-	"Earth": Vector3(0.0,0.0,0.0),
-	"Moon": Vector3(0.0,0.0,0.0),
-	"Mercury": Vector3(0.0,0.0,0.0),
-	"Venus": Vector3(0.0,0.0,0.0),
-	"Mars": Vector3(0.0,0.0,0.0),
-	"Jupiter": Vector3(0.0,0.0,0.0),
-	"Saturn": Vector3(0.0,0.0,0.0),
-	"Uranus": Vector3(0.0,0.0,0.0),
-	"Neptune": Vector3(0.0,0.0,0.0)
-}
 
 ### Date Ranges
 var customTimeDict = {
@@ -137,6 +125,11 @@ func _ready():
 	d_from_displayday()
 	get_orbital_elements(d)
 	calculate_and_draw_all(d)
+	
+	## debug only
+	#interface_debug_orbit_elements()
+	
+	pass
 
 func _process(_delta):
 	pass
@@ -215,7 +208,7 @@ func get_orbital_elements(dd):
 		"Mars": [
 			49.5574 + 0.0000211081 * dd,
 			1.8497,
-			286.5016 + 0.0000292961 * dd,
+			fposmod(286.5016 + 0.0000292961 * dd, 360),
 			1.523688,
 			0.093405,
 			fposmod(18.6021 + 0.5240207766 * dd, 360)
@@ -267,7 +260,7 @@ func get_orbital_elements(dd):
 	
 	pass
 	
-func fill_PosRSun_PosREarth(d):
+func fill_PosRSun_PosREarth():
 	
 	## Calculate the sun's position relative to the earth
 	PosREarth["Sun"] = find_sun_position(Orbits["Sun"][0],Orbits["Sun"][1],Orbits["Sun"][2],Orbits["Sun"][3],Orbits["Sun"][4],Orbits["Sun"][5])
@@ -319,6 +312,7 @@ func find_body_position(N,i,w,a,e,M):
 			E0 = E1
 			E1 = E0 - (E0 - e * sin(E0) - M) / (1 - e*cos(E0))
 			#print("E0=",str(E0)," E1=",str(E1))
+		E = E1;
 	
 	# Compute true anomaly
 	var xv = a * (cos(E) - e)
@@ -390,14 +384,14 @@ func draw_body(body,scale,texturepath,bodyscale):
 	BodySprite.set_scale(Vector2(bodyscale,bodyscale))
 	#BodySprite.set_material(load("res://Materials/planet.tres"))
 	pass
-
-func draw_system_heliocentric():
-	for body in Bodies:
-		get_node(body).set_position(PosRSun[body]*OrbitScales[body])
-
-func draw_system_geocentric():
-	for body in Bodies:
-		get_node(body).set_position(PosREarth[body]*OrbitScales[body])
+	
+func draw_system():
+	if heliocentic:
+		for body in Bodies:
+			get_node(body).set_position(PosRSun[body]*OrbitScales[body])
+	else:
+		for body in Bodies:
+			get_node(body).set_position(PosREarth[body]*OrbitScales[body])
 	
 func calculate_and_draw_all(dd):
 	
@@ -405,7 +399,7 @@ func calculate_and_draw_all(dd):
 	ecl = 23.4393 - 0.0000003563*dd
 	
 	## Calculate Positions
-	fill_PosRSun_PosREarth(dd)
+	fill_PosRSun_PosREarth()
 	
 	## Draw All Bodies
 	draw_bodies()
@@ -454,61 +448,6 @@ func interface_time_custom():
 			newoptionbutton.add_item(str(option))
 		newoptionbutton.connect("item_selected",self,str("customTime",text))
 		
-func customTimeYear(id):
-	print(str("Year: "),customTimeDict["Year"][id])
-	DisplayDay["Year"] = customTimeDict["Year"][id]
-	d_from_displayday()
-	get_orbital_elements(d)
-	fill_PosRSun_PosREarth(d)
-	if heliocentic:
-		draw_system_heliocentric()
-	else:
-		draw_system_geocentric()
-	
-func customTimeMonth(id):
-	print(str("Month: "),customTimeDict["Month"][id])
-	DisplayDay["Month"] = customTimeDict["Month"][id]
-	d_from_displayday()
-	get_orbital_elements(d)
-	fill_PosRSun_PosREarth(d)
-	if heliocentic:
-		draw_system_heliocentric()
-	else:
-		draw_system_geocentric()
-	
-func customTimeDay(id):
-	print(str("Day: "),customTimeDict["Day"][id])
-	DisplayDay["Day"] = customTimeDict["Day"][id]
-	d_from_displayday()
-	get_orbital_elements(d)
-	fill_PosRSun_PosREarth(d)
-	if heliocentic:
-		draw_system_heliocentric()
-	else:
-		draw_system_geocentric()
-	
-func customTimeHour(id):
-	print(str("Hour: "),customTimeDict["Hour"][id])
-	DisplayDay["Hour"] = customTimeDict["Hour"][id]
-	d_from_displayday()
-	get_orbital_elements(d)
-	fill_PosRSun_PosREarth(d)
-	if heliocentic:
-		draw_system_heliocentric()
-	else:
-		draw_system_geocentric()
-	
-func customTimeMinute(id):
-	print(str("Minute: "),customTimeDict["Minute"][id])
-	DisplayDay["Minute"] = customTimeDict["Minute"][id]
-	d_from_displayday()
-	get_orbital_elements(d)
-	fill_PosRSun_PosREarth(d)
-	if heliocentic:
-		draw_system_heliocentric()
-	else:
-		draw_system_geocentric()
-	
 func interface_time_current():
 	var DateSelectGrid = get_node("MainDateGrid/DateSelectGrid")
 	delete_children(DateSelectGrid)
@@ -526,7 +465,50 @@ func interface_time_current():
 		newlabel.set_name(str("Var",text))
 		newlabel.set_text(str(datetimeDict[text]))
 		DateSelectGrid.add_child(newlabel)
-
+	
+	displayday_to_current()
+	d_from_displayday()
+		
+func customTimeYear(id):
+#	print(str("Year: "),customTimeDict["Year"][id])
+	DisplayDay["Year"] = customTimeDict["Year"][id]
+	d_from_displayday()
+	get_orbital_elements(d)
+	fill_PosRSun_PosREarth()
+	draw_system()
+	
+func customTimeMonth(id):
+#	print(str("Month: "),customTimeDict["Month"][id])
+	DisplayDay["Month"] = customTimeDict["Month"][id]
+	d_from_displayday()
+	get_orbital_elements(d)
+	fill_PosRSun_PosREarth()
+	draw_system()
+	
+func customTimeDay(id):
+#	print(str("Day: "),customTimeDict["Day"][id])
+	DisplayDay["Day"] = customTimeDict["Day"][id]
+	d_from_displayday()
+	get_orbital_elements(d)
+	fill_PosRSun_PosREarth()
+	draw_system()
+	
+func customTimeHour(id):
+#	print(str("Hour: "),customTimeDict["Hour"][id])
+	DisplayDay["Hour"] = customTimeDict["Hour"][id]
+	d_from_displayday()
+	get_orbital_elements(d)
+	fill_PosRSun_PosREarth()
+	draw_system()
+	
+func customTimeMinute(id):
+#	print(str("Minute: "),customTimeDict["Minute"][id])
+	DisplayDay["Minute"] = customTimeDict["Minute"][id]
+	d_from_displayday()
+	get_orbital_elements(d)
+	fill_PosRSun_PosREarth()
+	draw_system()
+	
 func interface_centric_selection():
 	var ChooseCentric = OptionButton.new()
 	ChooseCentric.set_name("ChooseCentric")
@@ -539,17 +521,39 @@ func interface_centric_selection():
 func change_centric(id):
 	if not id:
 		heliocentic = true
-		draw_system_heliocentric()
 	elif id:
 		heliocentic = false
-		draw_system_geocentric()
+	draw_system()
 
 func change_time(id):
 	if not id:
 		interface_time_current()
 	elif id:
 		interface_time_custom()
-
+	
+func interface_debug_orbit_elements():
+	var debuggrid = GridContainer.new()
+	debuggrid.set_name("debuggrid")
+	add_child(debuggrid)
+	debuggrid.set_columns(7)
+	debuggrid.set_position(Vector2(-500,300))
+	for label in [" ","N","i","w","a","e","M"]:
+		var newlabel = Label.new()
+		newlabel.set_name(label)
+		newlabel.set_text(label)
+		debuggrid.add_child(newlabel)
+	for planet in Planets:
+		var newlabel = Label.new()
+		newlabel.set_name(str("Label",planet))
+		newlabel.set_text(planet)
+		debuggrid.add_child(newlabel)
+		for i in range(0,6):
+			var newnewlabel = Label.new()
+			newnewlabel.set_name(str(planet,"_",i))
+			newnewlabel.set_text(str(Orbits[planet][i]))
+			debuggrid.add_child(newnewlabel)
+	pass
+	
 static func delete_children(node):
 	for n in node.get_children():
 		node.remove_child(n)
