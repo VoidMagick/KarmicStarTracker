@@ -1,44 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Artwork/Icons/Vector/planet_sun.svg" type="Texture" id=1]
-
-[sub_resource type="Shader" id=1]
-code = "shader_type canvas_item;
-
-// Adjust these artistically
-uniform vec3 green1 = vec3(0.1,1.0,0.2);
-uniform vec3 white1 = vec3(1.0,1.0,1.0);
-uniform float planet_radius = 0.25;
-
-// Other constants -- probably do not touch
-uniform float PI = 3.1415926;
-
-void fragment(){
-	vec3 finalcolor = vec3(0.0);
-	float finalalpha = 1.0;
-	
-	// Position of each pixel from the center as a percentage
-	float pct = distance(UV,vec2(0.5));
-	
-	// Drawing the basic circle
-	float planet = smoothstep(planet_radius+0.005,planet_radius-0.005,pct);
-	finalcolor += vec3(planet)*green1;
-	finalalpha = planet;
-	
-	// Border circle color
-	float border = smoothstep(planet_radius-0.05,planet_radius+0.005,pct)*0.8;
-	finalcolor += vec3(border)*white1;
-	
-	// Color that baby up
-	COLOR = vec4(finalcolor,finalalpha);
-}"
-
-[sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
-shader_param/green1 = Vector3( 0.1, 1, 0.2 )
-shader_param/white1 = Vector3( 1, 1, 1 )
-shader_param/planet_radius = 0.25
-shader_param/PI = 3.14159
+[ext_resource path="res://Materials/planet.tres" type="Material" id=2]
 
 [node name="Node2D" type="Node2D"]
 
@@ -47,6 +10,6 @@ current = true
 zoom = Vector2( 0.2, 0.2 )
 
 [node name="Sprite" type="Sprite" parent="."]
-material = SubResource( 2 )
+material = ExtResource( 2 )
 scale = Vector2( 1.6, 1.6 )
 texture = ExtResource( 1 )

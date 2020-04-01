@@ -1,24 +1,15 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Shaders/2d_circular_grid.shader" type="Shader" id=1]
 [ext_resource path="res://Artwork/Icons/Vector/planet_sun.svg" type="Texture" id=2]
 [ext_resource path="res://Main.gd" type="Script" id=3]
-[ext_resource path="res://Shaders/2D_animated_sun.shader" type="Shader" id=13]
+[ext_resource path="res://Materials/sun.tres" type="Material" id=4]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 1 )
 shader_param/opacity = 0.5
 shader_param/cyan = Vector3( 0, 1, 1 )
 shader_param/green = Vector3( 0, 1, 0 )
-shader_param/PI = 3.14159
-
-[sub_resource type="ShaderMaterial" id=2]
-shader = ExtResource( 13 )
-shader_param/yellow1 = Vector3( 1, 0.9, 0.4 )
-shader_param/orange1 = Vector3( 1, 0.9, 0.4 )
-shader_param/red1 = Vector3( 1, 0.3, 0.2 )
-shader_param/sun_radius = 0.25
-shader_param/sun_corona_length = 0.02
 shader_param/PI = 3.14159
 
 [node name="Scene" type="Node2D"]
@@ -32,6 +23,5 @@ texture = ExtResource( 2 )
 [node name="Camera" type="Camera2D" parent="."]
 current = true
 
-[node name="Sun" type="Sprite" parent="."]
-material = SubResource( 2 )
-texture = ExtResource( 2 )
+[node name="Sprite" type="Sprite" parent="."]
+material = ExtResource( 4 )

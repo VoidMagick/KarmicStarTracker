@@ -35,8 +35,8 @@ void fragment(){
 	vec2 position = UV - 0.5;
 	float anglepos = atan(position.y,position.x);
 	
-	float wavefunc1 = (pct - (16.0 + amp*sin(anglepos*16.0-TIME*1.0)*cos(anglepos*12.0-TIME*1.5)*sin(anglepos*20.0+TIME*2.0)) * scale);
-	float smoothwave1 = (1.0 - smoothstep(thickness,thickness*50.0,wavefunc1))*0.5;
+	float wavefunc1 = (pct - (16.0 + amp*sin(anglepos*16.0-TIME*1.0)*cos(anglepos*12.0-TIME*1.5)*sin(anglepos*20.0+TIME*2.0)*cos(anglepos*27.0+TIME*0.2)) * scale);
+	float smoothwave1 = (1.0 - smoothstep(thickness,thickness*100.0,wavefunc1))*0.5;
 	finalcolor += vec3(smoothwave1)*red1;
 	finalalpha += smoothwave1;
 	
