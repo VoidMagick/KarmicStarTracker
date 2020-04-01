@@ -104,6 +104,7 @@ var customTimeDict = {
 	"Day": range(1,32),
 	"Hour": range(0,24),
 	"Minute": range(0,60),
+	"Second": 0.0
 }
 var DisplayDay = {
 	"Year": 2000,
@@ -116,15 +117,15 @@ var DisplayDay = {
 
 func _ready():
 	
-	## Create the interface
-	interface_centric_selection()
-	interface_time_selection()
-	
 	## Lets access the functions that get us the info we need
 	displayday_to_current()
 	d_from_displayday()
 	get_orbital_elements(d)
 	calculate_and_draw_all(d)
+	
+	## Create the interface
+	interface_centric_selection()
+	interface_time_selection()
 	
 	## debug only
 	#interface_debug_orbit_elements()
@@ -447,7 +448,13 @@ func interface_time_custom():
 		for option in customTimeDict[text]:
 			newoptionbutton.add_item(str(option))
 		newoptionbutton.connect("item_selected",self,str("customTime",text))
-		
+		DisplayDay[text] = customTimeDict[text][0]
+	
+	d_from_displayday()
+	get_orbital_elements(d)
+	fill_PosRSun_PosREarth()
+	draw_system()
+	
 func interface_time_current():
 	var DateSelectGrid = get_node("MainDateGrid/DateSelectGrid")
 	delete_children(DateSelectGrid)
@@ -468,6 +475,9 @@ func interface_time_current():
 	
 	displayday_to_current()
 	d_from_displayday()
+	get_orbital_elements(d)
+	fill_PosRSun_PosREarth()
+	draw_system()
 		
 func customTimeYear(id):
 #	print(str("Year: "),customTimeDict["Year"][id])
