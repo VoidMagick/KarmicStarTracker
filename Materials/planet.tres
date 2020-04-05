@@ -4,6 +4,6 @@
 
 [resource]
 shader = ExtResource( 1 )
-shader_param/planetColor = Vector3( 0.1, 1, 0.2 )
+shader_param/planetcolor = Vector3( 0.3, 0.4, 0.35 )
 shader_param/outline = Vector3( 1, 1, 1 )
 shader_param/planetRadius = 0.49

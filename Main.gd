@@ -115,6 +115,9 @@ var DisplayDay = {
 	"Second": 0,
 }
 
+### Time Zones
+var timeZones = {}
+
 func _ready():
 	
 	## Lets access the functions that get us the info we need
@@ -130,11 +133,31 @@ func _ready():
 	## debug only
 	#interface_debug_orbit_elements()
 	
+	## Fill the time zones
+	timezones()
+	
+	## Additional visuals
+	add_planet_light_occluders()
+	
 	pass
 
 func _process(_delta):
 	pass
-
+	
+func timezones():
+	for i in range(-12,-9):
+		timeZones[str("UTC-",abs(i),":00")] = i;
+	for i in range(-9,0):
+		timeZones[str("UTC-0",abs(i),":00")] = i;
+	for i in range(0,10):
+		timeZones[str("UTC+0",i,":00")] = i;
+	for i in range(10,15):
+		timeZones[str("UTC+",i,":00")] = i;
+	
+	var timezoneDict = OS.get_time_zone_info()
+	print(str("Bias=",timezoneDict.bias))
+	print(str("Name=",timezoneDict.name))
+	
 func d_from_displayday():
 	var yr = DisplayDay["Year"]
 	var mth = DisplayDay["Month"]
@@ -331,13 +354,26 @@ func find_body_position(N,i,w,a,e,M):
 	return BodyPos
 	
 func draw_bodies():
+	
+	## Create sprites for all planets except earth
 	for body in Planets:
 		draw_body(body,OrbitScales[body],BodySprites[body],BodyScales[body])
+	
+	## Create sprite for earth
 	var body = "Earth"
 	draw_body(body,OrbitScales[body],BodySprites[body],BodyScales[body])
+	
+	## Create sun, add shader, and add child light2d
 	body = "Sun"
 	draw_body(body,OrbitScales[body],BodySprites[body],BodyScales[body])
 	get_node("Sun").set_material(load("res://Materials/sun.tres"))
+	var sunlight = Light2D.new()
+	sunlight.set_name("sunlight")
+	sunlight.set_texture(load("res://Artwork/Icons/Vector/light_sun.svg"))
+	sunlight.set_scale(Vector2(40,40))
+	sunlight.shadow_enabled = true
+	sunlight.set_height(8)
+	get_node("Sun").add_child(sunlight)
 	
 func correct_Jupiter_longitude(longitude,Mj,Ms):
 	var corrected_longitude = longitude + \
@@ -383,7 +419,7 @@ func draw_body(body,scale,texturepath,bodyscale):
 	BodySprite.set_position(PosRSun[body]*scale)
 	BodySprite.set_texture(load(texturepath))
 	BodySprite.set_scale(Vector2(bodyscale,bodyscale))
-	#BodySprite.set_material(load("res://Materials/planet.tres"))
+	BodySprite.set_material(load("res://Materials/planet.tres"))
 	pass
 	
 func draw_system():
@@ -563,6 +599,27 @@ func interface_debug_orbit_elements():
 			newnewlabel.set_text(str(Orbits[planet][i]))
 			debuggrid.add_child(newnewlabel)
 	pass
+	
+func add_planet_light_occluders():
+	for planet in ["Earth","Mercury","Venus","Mars","Jupiter","Saturn","Uranus","Neptune"]:
+		
+		## Create the circle-ish polygon for the occuluder
+		var numPoints = 64
+		var circlePoints = PoolVector2Array()
+		for i in range(0,numPoints):
+			var theta = 2*PI/numPoints * i
+			circlePoints.append(Vector2(cos(theta),sin(theta)))
+		var circleShape = OccluderPolygon2D.new()
+		circleShape.set_name("PlanetLightOcculuderShape")
+		circleShape.set_polygon(circlePoints)
+		circleShape.set_cull_mode(1)
+		
+		## Create the occluder
+		var circleOccluder = LightOccluder2D.new()
+		circleOccluder.set_name(str(planet,"LightOcculuder"))
+		circleOccluder.set_scale(Vector2(30.0,30.0))
+		get_node(planet).add_child(circleOccluder)
+		circleOccluder.set_occluder_polygon(circleShape)
 	
 static func delete_children(node):
 	for n in node.get_children():
