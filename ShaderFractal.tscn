@@ -1,0 +1,43 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Artwork/Icons/Vector/planet_earth.svg" type="Texture" id=1]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+// Shader constants
+uniform int iterations = 8;
+
+uniform float cx = -0.9;
+uniform float cy = -0.8;
+
+void fragment(){
+	
+	float x = UV.x;
+	float y = UV.y;
+	
+	for (int i=0; i<iterations; i++) {
+		x = abs(x);
+		y = abs(y);
+		float m = x*x + y*y;
+		x = x/m + cx;
+		y = y/m + cy;
+	}
+	
+	// Color that baby up
+	COLOR = vec4(x,0.0,y,1.0);
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/iterations = 8
+shader_param/cx = -0.9
+shader_param/cy = -0.8
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Sprite" type="Sprite" parent="."]
+material = SubResource( 2 )
+position = Vector2( 512, 512 )
+scale = Vector2( 16, 16 )
+texture = ExtResource( 1 )
