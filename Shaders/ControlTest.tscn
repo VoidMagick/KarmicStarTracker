@@ -1,0 +1,26 @@
+[gd_scene format=2]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchor_right = 0.695
+anchor_bottom = 0.078
+margin_right = 304.32
+margin_bottom = 0.127998
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OptionButton" type="OptionButton" parent="CenterContainer"]
+margin_left = 470.0
+margin_top = 30.0
+margin_right = 545.0
+margin_bottom = 50.0
+text = "Thing 1"
+items = [ "Thing 1", null, false, 0, null, "Item 1", null, false, 1, null, "Item 2", null, false, 2, null, "Item 3", null, false, 3, null, "Item 4", null, false, 4, null, "Item 5", null, false, 5, null, "Item 6", null, false, 6, null, "Item 7", null, false, 7, null, "Item 8", null, false, 8, null ]
+selected = 0

@@ -124,7 +124,15 @@ func _ready():
 	displayday_to_current()
 	d_from_displayday()
 	get_orbital_elements(d)
-	calculate_and_draw_all(d)
+	
+	## Compute obliquity
+	ecl = 23.4393 - 0.0000003563*d
+	
+	## Calculate Positions
+	fill_PosRSun_PosREarth()
+	
+	## Draw All Bodies
+	add_body_sprites()
 	
 	## Create the interface
 	interface_centric_selection()
@@ -353,7 +361,7 @@ func find_body_position(N,i,w,a,e,M):
 	
 	return BodyPos
 	
-func draw_bodies():
+func add_body_sprites():
 	
 	## Create sprites for all planets except earth
 	for body in Planets:
@@ -429,17 +437,6 @@ func draw_system():
 	else:
 		for body in Bodies:
 			get_node(body).set_position(PosREarth[body]*OrbitScales[body])
-	
-func calculate_and_draw_all(dd):
-	
-	## Compute obliquity
-	ecl = 23.4393 - 0.0000003563*dd
-	
-	## Calculate Positions
-	fill_PosRSun_PosREarth()
-	
-	## Draw All Bodies
-	draw_bodies()
 	
 func interface_time_selection():
 	## Create the first grid container
@@ -556,6 +553,8 @@ func customTimeMinute(id):
 	draw_system()
 	
 func interface_centric_selection():
+	var CentricContainer = CenterContainer.new()
+	CentricContainer.set_name("CentricContainer")
 	var ChooseCentric = OptionButton.new()
 	ChooseCentric.set_name("ChooseCentric")
 	ChooseCentric.set_position(Vector2(0,-500))

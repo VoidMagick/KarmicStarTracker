@@ -5,7 +5,12 @@
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 1 )
-shader_param/NUM_OCTAVES = 5
+shader_param/yellow1 = Vector3( 1, 0.9, 0.4 )
+shader_param/orange1 = Vector3( 1, 0.9, 0.4 )
+shader_param/red1 = Vector3( 1, 0.3, 0.2 )
+shader_param/sun_radius = 0.25
+shader_param/sun_corona_length = 0.02
+shader_param/PI = 3.14159
 
 [node name="Node2D" type="Node2D"]
 
