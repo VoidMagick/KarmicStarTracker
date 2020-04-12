@@ -32,6 +32,7 @@ shader_param/PI = 3.14159
 script = ExtResource( 3 )
 
 [node name="Background" type="Sprite" parent="."]
+visible = false
 modulate = Color( 0.0901961, 0.0745098, 0.0901961, 1 )
 material = SubResource( 1 )
 texture = ExtResource( 5 )
@@ -63,3 +64,10 @@ radial_accel_random = 1.0
 tangential_accel = 1.0
 scale_amount = 0.05
 scale_amount_random = 0.25
+
+[node name="Control" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}

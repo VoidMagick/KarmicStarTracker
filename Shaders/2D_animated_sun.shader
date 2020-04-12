@@ -65,17 +65,17 @@ void fragment() {
 	
 	float f = fbm(st+r);
 	
-	color = mix(vec3(0.101961,0.619608,0.666667),
-				vec3(0.666667,0.666667,0.498039),
+	color = mix(vec3(0.970,0.074,0.028),
+				vec3(0.955,0.066,0.048),
 				clamp((f*f)*4.0,0.0,1.0));
 	
 	color = mix(color,
-				vec3(0,0,0.164706),
+				vec3(0.755,0.710,0.290),
 				clamp(length(q),0.0,1.0));
 	
 	color = mix(color,
-				vec3(0.666667,1,1),
+				vec3(1.000,0.664,0.281),
 				clamp(length(r),0.0,1.0));
 	
-	COLOR = vec4((f*f*f+.6*f*f+.5*f)*color,alpha);
+	COLOR = vec4((f*f*f+.8*f*f+1.*f)*color,alpha);
 }
