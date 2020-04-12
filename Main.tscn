@@ -3,7 +3,7 @@
 [ext_resource path="res://Shaders/2d_circular_grid.shader" type="Shader" id=1]
 [ext_resource path="res://Artwork/Icons/Vector/planet_sun.svg" type="Texture" id=2]
 [ext_resource path="res://Main.gd" type="Script" id=3]
-[ext_resource path="res://Artwork/Icons/Bitmap/star.png" type="Texture" id=4]
+[ext_resource path="res://UI.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Artwork/Backgrounds/background.jpg" type="Texture" id=5]
 [ext_resource path="res://Shaders/starfieldtest1.shader" type="Shader" id=6]
 
@@ -46,28 +46,9 @@ texture = ExtResource( 2 )
 [node name="Camera" type="Camera2D" parent="."]
 current = true
 
-[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
-visible = false
-light_mask = 0
-amount = 80
-lifetime = 10.0
-randomness = 0.25
-texture = ExtResource( 4 )
-emission_shape = 2
-emission_rect_extents = Vector2( 512, 512 )
-direction = Vector2( 0, 0 )
-gravity = Vector2( 0, 0 )
-angular_velocity = 147.7
-angular_velocity_random = 0.27
-radial_accel = 2.0
-radial_accel_random = 1.0
-tangential_accel = 1.0
-scale_amount = 0.05
-scale_amount_random = 0.25
-
-[node name="Control" type="Control" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="UI" parent="." instance=ExtResource( 4 )]
+anchor_bottom = 0.0
+margin_left = -512.0
+margin_top = -512.0
+margin_right = 512.0
+margin_bottom = 512.0
