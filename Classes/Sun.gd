@@ -9,7 +9,7 @@ func calculate_orbital_elements(d):
 	e = 0.016709
 	M = deg2rad(fposmod(356.0470 + 0.9856002585 * d, 360))
 
-func calculate_position(d,ecl):
+func calculate_position():
 	
 	## Find Sun Position Relative to Earth
 	

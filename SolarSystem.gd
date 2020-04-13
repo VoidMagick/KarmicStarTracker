@@ -7,13 +7,20 @@ func _ready():
 
 func centric_change(heliocentric):
 	
-	if heliocentric:
-		heliocentric = true
-	else:
-		heliocentric = false
-	
+	var d = TimeSelectionShared.d
+	var ecl = TimeSelectionShared.ecl
+	var helio = TimeSelectionShared.Heliocentric
+		
 	for N in get_children():
-		N.body_update(0,0,heliocentric)
+		N.body_update(d,ecl,helio)
 
 func time_change():
-	print("time change")
+	
+	TimeSelectionShared.compute_d()
+	
+	var d = TimeSelectionShared.d
+	var ecl = TimeSelectionShared.ecl
+	var helio = TimeSelectionShared.Heliocentric
+	
+	for N in get_children():
+		N.body_update(d,ecl,helio)

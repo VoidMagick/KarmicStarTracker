@@ -9,7 +9,7 @@ func calculate_orbital_elements(d):
 	e = 0.054900
 	M = deg2rad(fposmod(115.3654 + 13.0649929509 * d, 360))
 
-func calculate_position(d,ecl):
+func calculate_position():
 	
 	# Compute the eccentric anomaly of the body
 	var E = 0

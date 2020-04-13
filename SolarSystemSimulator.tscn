@@ -26,6 +26,7 @@ script = ExtResource( 19 )
 [node name="Sun" parent="." instance=ExtResource( 1 )]
 scale = Vector2( 0.8, 0.8 )
 script = ExtResource( 10 )
+orbitscale = 100
 
 [node name="Mercury" parent="." instance=ExtResource( 2 )]
 position = Vector2( 31.6093, -36.0195 )

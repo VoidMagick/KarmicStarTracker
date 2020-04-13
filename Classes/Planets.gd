@@ -1,6 +1,6 @@
 extends "res://Classes/CelestialBody.gd"
 
-func calculate_position(d,ecl):
+func calculate_position():
 	
 	# Compute the eccentric anomaly of the body
 	var E = 0
@@ -12,7 +12,6 @@ func calculate_position(d,ecl):
 		while abs(E0-E1) > 0.0001:
 			E0 = E1
 			E1 = E0 - (E0 - e * sin(E0) - M) / (1 - e*cos(E0))
-			#print("E0=",str(E0)," E1=",str(E1))
 		E = E1;
 	
 	# Compute true anomaly
@@ -26,9 +25,26 @@ func calculate_position(d,ecl):
 	var yh = r * (sin(N) * cos(v+w) + cos(N) * sin(v+w) * cos(i))
 	var zh = r * (sin(v+w) * sin(i))
 	
-	PosRSun = Vector3(xh,yh,zh)
-	
 	LongRSun = atan2(yh,xh)
 	LatRSun = atan2(zh,sqrt(xh*xh+yh*yh))
 	
 	consider_perturbations()
+	
+	# Re-compute position considering perturbations
+	xh = r * cos(LongRSun) * cos(LatRSun)
+	yh = r * sin(LongRSun) * cos(LatRSun)
+	zh = r * sin(LatRSun)
+	
+	PosRSun = Vector3(xh,yh,zh)
+	
+	# Calculate sun's position and compare
+	var xs = rs * cos(lonsun)
+	var ys = rs * sin(lonsun)
+	
+	var xg = xh + xs
+	var yg = yh + ys
+	var zg = zh
+	
+	PosREarth = Vector3(xg,yg,zg)
+	
+	

@@ -12,9 +12,15 @@ var DDay = 0
 var DHour = 0
 var DMinute = 0
 
-func _ready():
+var d = 0
+var ecl = 0
+
+var Heliocentric = true
+
+func _init():
 	get_current_time()
 	reset_display_time_to_current()
+	compute_d()
 
 func get_current_time():
 	
@@ -33,3 +39,13 @@ func reset_display_time_to_current():
 	DDay = CDay
 	DHour = CHour
 	DMinute = CMinute
+
+func compute_d():
+	var yr = DYear
+	var mth = DMonth
+	var dy = DDay
+	var hr = DHour
+	var mn = DMinute
+	var sc = 0
+	d = 367*yr - 7*(yr+(mth+9)/12)/4 - 3*((yr+(mth-9)/7)/100+1)/4 + 275*mth/9 + dy - 730515 + (hr+(mn+sc/60.0)/60.0)/24.0
+	ecl = 23.4393 - 0.0000003563*d
