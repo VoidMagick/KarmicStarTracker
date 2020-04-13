@@ -2,12 +2,12 @@ extends "res://Classes/CelestialBody.gd"
 
 func calculate_orbital_elements(d):
 	
-	var N = 0.0
-	var i = 0.0
-	var w = deg2rad(282.9404 + 0.0000470935 * d)
-	var a = 1.0
-	var e = 0.016709
-	var M = deg2rad(fposmod(356.0470 + 0.9856002585 * d, 360))
+	N = 0.0
+	i = 0.0
+	w = deg2rad(282.9404 + 0.0000470935 * d)
+	a = 1.0
+	e = 0.016709
+	M = deg2rad(fposmod(356.0470 + 0.9856002585 * d, 360))
 
 func calculate_position(d,ecl):
 	

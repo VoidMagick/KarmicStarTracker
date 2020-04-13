@@ -11,13 +11,15 @@ signal minute_changed()
 
 ## Editable input variables
 
-export var Year: int = 2000
-export var Month: int = 1
-export var Day: int = 1
-export var Hour: int = 0
+export var Year: int = 2020
+export var Month: int = 4
+export var Day: int = 12
+export var Hour: int = 21
 export var Minute: int = 0
 
 export var Heliocentric: bool = true
+
+export var orbitscale = 1
 
 ## Variables that will be inherited
 
@@ -31,6 +33,7 @@ var PosRSun = Vector3(0,0,0)
 var LongRSun = 0
 var LatRSun = 0
 
+
 ## Orbital Elements
 
 var N: float = 0.0
@@ -41,22 +44,21 @@ var e: float = 0.0
 var M: float = 0.0
 
 func _ready():
-	pass
+	
+	compute_d()
+	calculate_orbital_elements(d)
+	body_update(d,ecl,Heliocentric)
 
 func _init():
 	
 	add_to_group("CelestialBodies")
 	
-	connect("centricity_changed",self,"_on_centricity_changed")
-	connect("year_changed",self,"_on_year_change")
-	connect("month_changed",self,"_on_month_change")
-	connect("day_changed",self,"_on_day_change")
-	connect("hour_changed",self,"_on_hour_change")
-	connect("minute_changed",self,"_on_minute_change")
-	
-	compute_d()
-	calculate_orbital_elements(d)
-	body_update(d,ecl,Heliocentric)
+#	connect("centricity_changed",self,"_on_centricity_changed")
+#	connect("year_changed",self,"_on_year_change")
+#	connect("month_changed",self,"_on_month_change")
+#	connect("day_changed",self,"_on_day_change")
+#	connect("hour_changed",self,"_on_hour_change")
+#	connect("minute_changed",self,"_on_minute_change")
 
 ################################################################################
 # Astronomical Calculations
@@ -87,33 +89,33 @@ func consider_perturbations():
 
 func position_body(heliocentric):
 	if heliocentric:
-		set_position(Vector2(PosRSun.x,PosRSun.y))
+		set_position(Vector2(PosRSun.x*orbitscale,PosRSun.y*orbitscale))
 	else:
-		set_position(Vector2(PosREarth.x,PosREarth.y))
+		set_position(Vector2(PosREarth.x*orbitscale,PosREarth.y*orbitscale))
 
 ################################################################################
 # Signal Functions
 
-func _on_centricity_changed(previous, new):
-	compute_d()
-	body_update(d,ecl,Heliocentric)
-
-func _on_year_changed():
-	compute_d()
-	body_update(d,ecl,Heliocentric)
-
-func _on_month_changed():
-	compute_d()
-	body_update(d,ecl,Heliocentric)
-
-func _on_day_changed():
-	compute_d()
-	body_update(d,ecl,Heliocentric)
-
-func _on_hour_changed():
-	compute_d()
-	body_update(d,ecl,Heliocentric)
-
-func _on_minute_changed():
-	compute_d()
-	body_update(d,ecl,Heliocentric)
+#func _on_centricity_changed(previous, new):
+#	compute_d()
+#	body_update(d,ecl,Heliocentric)
+#
+#func _on_year_changed():
+#	compute_d()
+#	body_update(d,ecl,Heliocentric)
+#
+#func _on_month_changed():
+#	compute_d()
+#	body_update(d,ecl,Heliocentric)
+#
+#func _on_day_changed():
+#	compute_d()
+#	body_update(d,ecl,Heliocentric)
+#
+#func _on_hour_changed():
+#	compute_d()
+#	body_update(d,ecl,Heliocentric)
+#
+#func _on_minute_changed():
+#	compute_d()
+#	body_update(d,ecl,Heliocentric)

@@ -9,11 +9,6 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Node2D",
-"class": "OrbitalCalculations",
-"language": "GDScript",
-"path": "res://Scripts/OrbitalCalculations.gd"
-}, {
 "base": "VisualShaderNodeCustom",
 "class": "VisualShaderNodeNoiseGeneric2d",
 "language": "GDScript",
@@ -485,7 +480,6 @@ _global_script_classes=[ {
 "path": "res://addons/shaderV/tools/vec2Compose.gd"
 } ]
 _global_script_class_icons={
-"OrbitalCalculations": "",
 "VisualShaderNodeNoiseGeneric2d": "",
 "VisualShaderNodeNoiseGeneric2dFractal": "",
 "VisualShaderNodeNoisePerlin2d": "",
@@ -587,6 +581,10 @@ _global_script_class_icons={
 config/name="KarmicStarTracker"
 run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+TimeSelectionShared="*res://Scripts/time_selection_shared.gd"
 
 [display]
 

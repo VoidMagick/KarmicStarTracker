@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Sun.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Planet.tscn" type="PackedScene" id=2]
@@ -9,32 +9,75 @@
 [ext_resource path="res://Artwork/Icons/Vector/planet_jupiter.svg" type="Texture" id=7]
 [ext_resource path="res://Artwork/Icons/Vector/planet_uranus.svg" type="Texture" id=8]
 [ext_resource path="res://Artwork/Icons/Vector/planet_saturn.svg" type="Texture" id=9]
-[ext_resource path="res://SolarSystemSimulator.gd" type="Script" id=10]
+[ext_resource path="res://Classes/Sun.gd" type="Script" id=10]
+[ext_resource path="res://Classes/Earth.gd" type="Script" id=11]
+[ext_resource path="res://Classes/Mercury.gd" type="Script" id=12]
+[ext_resource path="res://Classes/Venus.gd" type="Script" id=13]
+[ext_resource path="res://Classes/Neptune.gd" type="Script" id=14]
+[ext_resource path="res://Classes/Jupiter.gd" type="Script" id=15]
+[ext_resource path="res://Classes/Mars.gd" type="Script" id=16]
+[ext_resource path="res://Classes/Saturn.gd" type="Script" id=17]
+[ext_resource path="res://Classes/Uranus.gd" type="Script" id=18]
+[ext_resource path="res://SolarSystem.gd" type="Script" id=19]
 
 [node name="SolarSystem" type="Node2D"]
-script = ExtResource( 10 )
+script = ExtResource( 19 )
 
 [node name="Sun" parent="." instance=ExtResource( 1 )]
+scale = Vector2( 0.8, 0.8 )
+script = ExtResource( 10 )
 
 [node name="Mercury" parent="." instance=ExtResource( 2 )]
+position = Vector2( 31.6093, -36.0195 )
+scale = Vector2( 0.1, 0.1 )
 texture = ExtResource( 4 )
+script = ExtResource( 12 )
+orbitscale = 100
 
 [node name="Venus" parent="." instance=ExtResource( 2 )]
+position = Vector2( 27.9026, -70.79 )
+scale = Vector2( 0.19, 0.19 )
 texture = ExtResource( 5 )
+script = ExtResource( 13 )
+orbitscale = 100
 
 [node name="Earth" parent="." instance=ExtResource( 2 )]
+position = Vector2( 6.08884, -90.7705 )
+scale = Vector2( 0.2, 0.2 )
+script = ExtResource( 11 )
+orbitscale = 100
 
 [node name="Mars" parent="." instance=ExtResource( 2 )]
+position = Vector2( -27.5107, -97.0931 )
+scale = Vector2( 0.12, 0.12 )
 texture = ExtResource( 6 )
+script = ExtResource( 16 )
+orbitscale = 100
 
 [node name="Jupiter" parent="." instance=ExtResource( 2 )]
+position = Vector2( -73.4036, -85.3086 )
+scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 7 )
+script = ExtResource( 15 )
+orbitscale = 35
 
 [node name="Saturn" parent="." instance=ExtResource( 2 )]
+position = Vector2( -99.6677, -42.8508 )
+scale = Vector2( 0.28, 0.28 )
 texture = ExtResource( 9 )
+script = ExtResource( 17 )
+orbitscale = 25
 
 [node name="Neptune" parent="." instance=ExtResource( 2 )]
+position = Vector2( -105.054, 2.53442 )
+scale = Vector2( 0.3, 0.3 )
 texture = ExtResource( 3 )
+script = ExtResource( 14 )
+orbitscale = 15
 
 [node name="Uranus" parent="." instance=ExtResource( 2 )]
+position = Vector2( -100.45, 55.7249 )
+scale = Vector2( 0.27, 0.27 )
 texture = ExtResource( 8 )
+script = ExtResource( 18 )
+orbitscale = 15

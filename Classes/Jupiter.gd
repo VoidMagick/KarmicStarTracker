@@ -2,12 +2,12 @@ extends "res://Classes/Planets.gd"
 
 func calculate_orbital_elements(d):
 	
-	var N = deg2rad(fposmod(100.4542 + 0.0000276854 * d, 360))
-	var i = deg2rad(1.3030)
-	var w = deg2rad(fposmod(273.8777 + 0.0000164505 * d, 360))
-	var a = 5.20256
-	var e = 0.048498
-	var M = deg2rad(fposmod(19.8950 + 0.0830853001 * d, 360))
+	N = deg2rad(fposmod(100.4542 + 0.0000276854 * d, 360))
+	i = deg2rad(1.3030)
+	w = deg2rad(fposmod(273.8777 + 0.0000164505 * d, 360))
+	a = 5.20256
+	e = 0.048498
+	M = deg2rad(fposmod(19.8950 + 0.0830853001 * d, 360))
 
 func calculate_perturbations():
 	
