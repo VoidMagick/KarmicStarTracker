@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Sun.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Planet.tscn" type="PackedScene" id=2]
@@ -19,6 +19,8 @@
 [ext_resource path="res://Classes/Saturn.gd" type="Script" id=17]
 [ext_resource path="res://Classes/Uranus.gd" type="Script" id=18]
 [ext_resource path="res://SolarSystem.gd" type="Script" id=19]
+[ext_resource path="res://Artwork/Icons/Vector/light_sun.svg" type="Texture" id=20]
+[ext_resource path="res://Artwork/Backgrounds/background.jpg" type="Texture" id=21]
 
 [node name="SolarSystem" type="Node2D"]
 script = ExtResource( 19 )
@@ -28,28 +30,41 @@ scale = Vector2( 0.5, 0.5 )
 script = ExtResource( 10 )
 orbitscale = 100
 
+[node name="TempBackground" type="Sprite" parent="Sun"]
+modulate = Color( 0.203922, 0.14902, 0.14902, 1 )
+show_behind_parent = true
+scale = Vector2( 16, 16 )
+texture = ExtResource( 21 )
+
+[node name="Light2D" type="Light2D" parent="Sun"]
+position = Vector2( 0.0677261, 0 )
+scale = Vector2( 20, 20 )
+texture = ExtResource( 20 )
+energy = 0.5
+shadow_enabled = true
+
 [node name="Mercury" parent="." instance=ExtResource( 2 )]
-position = Vector2( 31.6093, -36.0195 )
+position = Vector2( 13.214, 20.0424 )
 scale = Vector2( 0.1, 0.1 )
 texture = ExtResource( 4 )
 script = ExtResource( 12 )
 orbitscale = 100
 
 [node name="Venus" parent="." instance=ExtResource( 2 )]
-position = Vector2( 27.9026, -70.79 )
+position = Vector2( 33.1584, 15.0548 )
 scale = Vector2( 0.19, 0.19 )
 texture = ExtResource( 5 )
 script = ExtResource( 13 )
 orbitscale = 100
 
 [node name="Earth" parent="." instance=ExtResource( 2 )]
-position = Vector2( 6.08884, -90.7705 )
+position = Vector2( 13.9725, 47.9243 )
 scale = Vector2( 0.2, 0.2 )
 script = ExtResource( 11 )
 orbitscale = 100
 
 [node name="Mars" parent="." instance=ExtResource( 2 )]
-position = Vector2( -27.5107, -97.0931 )
+position = Vector2( 66.8017, 9.48286 )
 scale = Vector2( 0.12, 0.12 )
 texture = ExtResource( 6 )
 script = ExtResource( 16 )
