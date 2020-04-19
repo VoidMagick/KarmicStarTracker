@@ -3,6 +3,7 @@ extends VBoxContainer
 signal time_reset()
 
 func _ready():
+	
 	connect("time_reset",get_node("TimeGrid/EYear"),"control_reset")
 	connect("time_reset",get_node("TimeGrid/EMonth"),"control_reset")
 	connect("time_reset",get_node("TimeGrid/EDay"),"control_reset")

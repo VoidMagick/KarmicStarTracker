@@ -1,5 +1,7 @@
 extends OptionButton
 
+signal month_changed()
+
 func _ready():
 	control_reset()
 

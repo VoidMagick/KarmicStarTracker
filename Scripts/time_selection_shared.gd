@@ -17,9 +17,8 @@ var ecl = 0
 var lonsun = 0
 var rs = 0
 
-var ryears = range(1950,2050)
-
 var timeRangeDict = {}
+var Daycount = {1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31}
 
 var Heliocentric = true
 var zoom = 100
@@ -106,3 +105,47 @@ func calculate_lonsun():
 	
 	# Compute longitude
 	lonsun = vs + ws
+
+func change_time(step):
+	
+	var t_year = DYear
+	var t_month = DMonth
+	var t_day = DDay
+	var t_hour = DHour
+	var t_minute = DMinute
+	
+	t_hour += step
+	
+	## Account for overflow when moving forward in time
+	
+	if t_hour > 23:
+		t_hour -= 24
+		t_day += 1
+	
+	if t_day > Daycount[t_month]:
+		t_day = 1
+		t_month += 1
+	
+	if t_month > 12:
+		t_month = 1
+		t_year += 1
+	
+	## Account for underflow when moving backwards in time
+	
+	if t_hour < 0:
+		t_hour += 24
+		t_day -= 1
+	
+	if t_day < 1:
+		t_day += 1
+		t_month -= 1
+	
+	if t_month < 1:
+		t_month += 1
+		t_year -= 1
+	
+	DYear = t_year
+	DMonth = t_month
+	DDay = t_day
+	DHour = t_hour
+	DMinute = t_minute

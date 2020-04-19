@@ -6,7 +6,6 @@ func _ready():
 	var SS = get_node("SystemViewer/ViewportContainer/Viewport/SolarSystem")
 	get_node("UI").connect("centric_change",SS,"centric_change")
 	get_node("UI").connect("time_change",SS,"time_change")
-	#get_node("UI").connect("zoom_change",SS,"zoom_change")
 	get_node("UI").connect("play_simulation",SS,"play_simulation")
 	get_node("UI").connect("stop_simulation",SS,"stop_simulation")
 	

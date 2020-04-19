@@ -15,9 +15,11 @@ func _ready():
 func _on_ChooseCentric_item_selected(id):
 	if not id:
 		TimeSelectionShared.Heliocentric = true
+		emit_signal("stop_simulation")
 		emit_signal("centric_change",true)
 	else:
 		TimeSelectionShared.Heliocentric = false
+		emit_signal("stop_simulation")
 		emit_signal("centric_change",false)
 
 ################################################################################
@@ -29,7 +31,6 @@ func _on_EYear_value_changed(value):
 
 func _on_EMonth_item_selected(id):
 	TimeSelectionShared.DMonth = id + 1
-	print("month is ",TimeSelectionShared.DMonth)
 	emit_signal("time_change")
 
 func _on_EDay_value_changed(value):
