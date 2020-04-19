@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://UI/UI.gd" type="Script" id=1]
 [ext_resource path="res://UI/TimeSelectionContainer.gd" type="Script" id=2]
@@ -7,6 +7,11 @@
 [ext_resource path="res://UI/EYear.gd" type="Script" id=5]
 [ext_resource path="res://UI/EHour.gd" type="Script" id=6]
 [ext_resource path="res://UI/EMonth.gd" type="Script" id=7]
+[ext_resource path="res://Artwork/Icons/Vector/control_pause.svg" type="Texture" id=8]
+[ext_resource path="res://Artwork/Icons/Vector/control_play.svg" type="Texture" id=9]
+[ext_resource path="res://Artwork/Icons/Vector/control_fast.svg" type="Texture" id=10]
+[ext_resource path="res://Artwork/Icons/Vector/control_reverse.svg" type="Texture" id=11]
+[ext_resource path="res://UI/ZoomSlider.gd" type="Script" id=12]
 
 [node name="UI" type="Control"]
 light_mask = 0
@@ -79,7 +84,7 @@ margin_top = 28.0
 margin_right = 123.0
 margin_bottom = 48.0
 text = "Jan"
-items = [ "Jan", null, false, 1, null, "Feb", null, false, 2, null, "Mar", null, false, 3, null, "Apr", null, false, 4, null, "May", null, false, 5, null, "Jun", null, false, 6, null, "July", null, false, 7, null, "Aug", null, false, 8, null, "Sep", null, false, 9, null, "Oct", null, false, 10, null, "Nov", null, false, 11, null, "Dec", null, false, 12, null ]
+items = [ "Jan", null, false, 0, null, "Feb", null, false, 1, null, "Mar", null, false, 2, null, "Apr", null, false, 3, null, "May", null, false, 4, null, "Jun", null, false, 5, null, "July", null, false, 6, null, "Aug", null, false, 7, null, "Sep", null, false, 8, null, "Oct", null, false, 9, null, "Nov", null, false, 10, null, "Dec", null, false, 11, null ]
 selected = 0
 script = ExtResource( 7 )
 __meta__ = {
@@ -153,6 +158,46 @@ text = "Heliocentric"
 items = [ "Heliocentric", null, false, 0, null, "Geocentric", null, false, 1, null ]
 selected = 0
 
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TopContainer/MarginContainer/VBoxContainer"]
+margin_top = 24.0
+margin_right = 740.0
+margin_bottom = 46.0
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/VBoxContainer/TopContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_right = 304.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+
+[node name="Rewind" type="Button" parent="MarginContainer/VBoxContainer/TopContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 308.0
+margin_right = 336.0
+margin_bottom = 22.0
+icon = ExtResource( 11 )
+
+[node name="Pause" type="Button" parent="MarginContainer/VBoxContainer/TopContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 340.0
+margin_right = 368.0
+margin_bottom = 22.0
+icon = ExtResource( 8 )
+
+[node name="Play" type="Button" parent="MarginContainer/VBoxContainer/TopContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 372.0
+margin_right = 400.0
+margin_bottom = 22.0
+icon = ExtResource( 9 )
+
+[node name="Fast" type="Button" parent="MarginContainer/VBoxContainer/TopContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 404.0
+margin_right = 432.0
+margin_bottom = 22.0
+icon = ExtResource( 10 )
+
+[node name="CenterContainer2" type="CenterContainer" parent="MarginContainer/VBoxContainer/TopContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 436.0
+margin_right = 740.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TopContainer"]
 margin_left = 897.0
 margin_right = 1004.0
@@ -178,11 +223,17 @@ margin_right = 984.0
 margin_bottom = 816.0
 size_flags_horizontal = 3
 
-[node name="VSlider" type="VSlider" parent="MarginContainer/VBoxContainer/MiddleContainer/HBoxContainer"]
+[node name="ZoomSlider" type="VSlider" parent="MarginContainer/VBoxContainer/MiddleContainer/HBoxContainer"]
 margin_left = 988.0
 margin_right = 1004.0
 margin_bottom = 816.0
+min_value = 0.1
+max_value = 8.0
+step = 0.01
+value = 1.0
+scrollable = false
 tick_count = 10
+script = ExtResource( 12 )
 
 [node name="BottomContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
 margin_top = 980.0
@@ -199,3 +250,8 @@ margin_bottom = 24.0
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/TopContainer/TimeSelectionContainer/TimeGrid/EHour" to="." method="_on_EHour_value_changed"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/TopContainer/TimeSelectionContainer/TimeGrid/EMinute" to="." method="_on_EMinute_value_changed"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/TopContainer/MarginContainer/VBoxContainer/CenterContainer/ChooseCentric" to="." method="_on_ChooseCentric_item_selected"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TopContainer/MarginContainer/VBoxContainer/HBoxContainer/Rewind" to="." method="_on_Rewind_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TopContainer/MarginContainer/VBoxContainer/HBoxContainer/Pause" to="." method="_on_Pause_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TopContainer/MarginContainer/VBoxContainer/HBoxContainer/Play" to="." method="_on_Play_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TopContainer/MarginContainer/VBoxContainer/HBoxContainer/Fast" to="." method="_on_Fast_pressed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/MiddleContainer/HBoxContainer/ZoomSlider" to="." method="_on_ZoomSlider_value_changed"]

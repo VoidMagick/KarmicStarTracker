@@ -7,4 +7,4 @@ func calculate_orbital_elements(d):
 	w = deg2rad(29.1241)
 	a = 0.387098
 	e = 0.205635
-	M = fposmod(168.6562 + 4.0923344368 * d, 360)
+	M = deg2rad(fposmod(168.6562 + 4.0923344368 * d, 360))

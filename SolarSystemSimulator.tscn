@@ -24,7 +24,7 @@
 script = ExtResource( 19 )
 
 [node name="Sun" parent="." instance=ExtResource( 1 )]
-scale = Vector2( 0.8, 0.8 )
+scale = Vector2( 0.5, 0.5 )
 script = ExtResource( 10 )
 orbitscale = 100
 
@@ -60,25 +60,25 @@ position = Vector2( -73.4036, -85.3086 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 7 )
 script = ExtResource( 15 )
-orbitscale = 35
+orbitscale = 100
 
 [node name="Saturn" parent="." instance=ExtResource( 2 )]
 position = Vector2( -99.6677, -42.8508 )
 scale = Vector2( 0.28, 0.28 )
 texture = ExtResource( 9 )
 script = ExtResource( 17 )
-orbitscale = 25
+orbitscale = 100
 
 [node name="Neptune" parent="." instance=ExtResource( 2 )]
 position = Vector2( -105.054, 2.53442 )
 scale = Vector2( 0.3, 0.3 )
 texture = ExtResource( 3 )
 script = ExtResource( 14 )
-orbitscale = 15
+orbitscale = 100
 
 [node name="Uranus" parent="." instance=ExtResource( 2 )]
 position = Vector2( -100.45, 55.7249 )
 scale = Vector2( 0.27, 0.27 )
 texture = ExtResource( 8 )
 script = ExtResource( 18 )
-orbitscale = 15
+orbitscale = 100

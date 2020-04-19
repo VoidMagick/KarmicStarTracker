@@ -14,8 +14,11 @@ var DMinute = 0
 
 var d = 0
 var ecl = 0
+var lonsun = 0
+var rs = 0
 
 var Heliocentric = true
+var zoom = 100
 
 func _init():
 	get_current_time()
@@ -41,6 +44,7 @@ func reset_display_time_to_current():
 	DMinute = CMinute
 
 func compute_d():
+	
 	var yr = DYear
 	var mth = DMonth
 	var dy = DDay

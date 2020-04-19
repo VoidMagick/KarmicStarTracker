@@ -25,6 +25,7 @@ var M: float = 0.0
 var d = TimeSelectionShared.d
 var ecl = TimeSelectionShared.ecl
 var heliocentric = TimeSelectionShared.Heliocentric
+var zoom = TimeSelectionShared.zoom
 
 var rs = 0
 var lonsun = 0
@@ -33,8 +34,8 @@ func _ready():
 	
 	TimeSelectionShared.compute_d()
 	calculate_orbital_elements(d)
-	calculate_lonsun(d)
-	body_update(d,ecl,heliocentric)
+	calculate_lonsun()
+	body_update(d,ecl,heliocentric,zoom)
 
 func _init():
 	
@@ -46,7 +47,9 @@ func _init():
 func calculate_orbital_elements(d):
 	pass
 
-func calculate_lonsun(d):
+func calculate_lonsun():
+	
+	d = TimeSelectionShared.d
 	
 	var ws = deg2rad(282.9404 + 0.0000470935 * d)
 	var es = 0.016709
@@ -62,14 +65,14 @@ func calculate_lonsun(d):
 	var yvs = sqrt(1.0 - es*es) * sin(Es)
 	var vs = atan2(yvs,xvs)
 	rs = sqrt(xvs*xvs + yvs*yvs)
-		
+	
 	# Compute longitude
 	lonsun = vs + ws
 
-func body_update(d,ecl,heliocentric):
+func body_update(d,ecl,heliocentric,zoom):
 	calculate_orbital_elements(d)
 	calculate_position()
-	position_body(heliocentric)
+	position_body(heliocentric,zoom)
 
 func calculate_position():
 	consider_perturbations()
@@ -78,10 +81,13 @@ func calculate_position():
 func consider_perturbations():
 	pass
 
-func position_body(heliocentric):
+func position_body(heliocentric,zoom):
+	zoom = 100 ## zoom with this method is disabled for now
 	if heliocentric:
-		set_position(Vector2(PosRSun.x*orbitscale,PosRSun.y*orbitscale))
+		set_position(Vector2(PosRSun.x*orbitscale*(zoom/100),
+							PosRSun.y*orbitscale*(zoom/100)))
 	else:
-		set_position(Vector2(PosREarth.x*orbitscale,PosREarth.y*orbitscale))
+		set_position(Vector2(PosREarth.x*orbitscale*(zoom/100),
+							PosREarth.y*orbitscale*(zoom/100)))
 
 ################################################################################

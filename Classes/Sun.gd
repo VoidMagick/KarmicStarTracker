@@ -11,23 +11,11 @@ func calculate_orbital_elements(d):
 
 func calculate_position():
 	
-	## Find Sun Position Relative to Earth
-	
-	# Compute the eccentric anomaly of the sun
-	var E = M + e * sin(M) * (1.0 + e*cos(M))
-	
-	# Compute true anomaly
-	var xv = cos(E) - e
-	var yv = sqrt(1.0 - e*e) * sin(E)
-	var v = atan2(yv,xv)
-	var r = sqrt(xv*xv + yv*yv)
-		
-	# Compute longitude
-	var lonsun = v + w
+	calculate_lonsun()
 	
 	# Convert to ecliptic rectangular coordinates
-	var xs = r * cos(lonsun)
-	var ys = r * sin(lonsun)
+	var xe = rs * cos(lonsun)
+	var ye = rs * sin(lonsun)
 	
-	PosREarth = Vector3(xs,ys*cos(ecl),ys*sin(ecl))
+	PosREarth = Vector3(xe,ye,0)
 	PosRSun = Vector3(0,0,0)
