@@ -38,6 +38,8 @@ func calculate_position():
 	PosRSun = Vector3(xh,yh,zh)
 	
 	# Calculate sun's position and compare
+	lonsun = TimeSelectionShared.lonsun
+	rs = TimeSelectionShared.rs
 	var xs = rs * cos(lonsun)
 	var ys = rs * sin(lonsun)
 	

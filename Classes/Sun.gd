@@ -11,9 +11,9 @@ func calculate_orbital_elements(d):
 
 func calculate_position():
 	
-	calculate_lonsun()
-	
 	# Convert to ecliptic rectangular coordinates
+	lonsun = TimeSelectionShared.lonsun
+	rs = TimeSelectionShared.rs
 	var xe = rs * cos(lonsun)
 	var ye = rs * sin(lonsun)
 	

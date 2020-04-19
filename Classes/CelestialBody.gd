@@ -34,7 +34,7 @@ func _ready():
 	
 	TimeSelectionShared.compute_d()
 	calculate_orbital_elements(d)
-	calculate_lonsun()
+	TimeSelectionShared.calculate_lonsun()
 	body_update(d,ecl,heliocentric,zoom)
 
 func _init():
@@ -46,28 +46,6 @@ func _init():
 
 func calculate_orbital_elements(d):
 	pass
-
-func calculate_lonsun():
-	
-	d = TimeSelectionShared.d
-	
-	var ws = deg2rad(282.9404 + 0.0000470935 * d)
-	var es = 0.016709
-	var Ms = deg2rad(fposmod(356.0470 + 0.9856002585 * d, 360))
-	
-	## Find Sun Position Relative to Earth
-	
-	# Compute the eccentric anomaly of the sun
-	var Es = Ms + es * sin(Ms) * (1.0 + es*cos(Ms))
-	
-	# Compute true anomaly
-	var xvs = cos(Es) - es
-	var yvs = sqrt(1.0 - es*es) * sin(Es)
-	var vs = atan2(yvs,xvs)
-	rs = sqrt(xvs*xvs + yvs*yvs)
-	
-	# Compute longitude
-	lonsun = vs + ws
 
 func body_update(d,ecl,heliocentric,zoom):
 	calculate_orbital_elements(d)

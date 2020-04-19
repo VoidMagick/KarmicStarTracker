@@ -30,6 +30,7 @@ func centric_change(heliocentric):
 func time_change():
 	
 	TimeSelectionShared.compute_d()
+	TimeSelectionShared.calculate_lonsun()
 	
 	var d = TimeSelectionShared.d
 	var ecl = TimeSelectionShared.ecl
