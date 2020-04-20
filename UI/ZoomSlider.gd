@@ -12,16 +12,20 @@ func _input(event):
 func change_zoom(dir):
 	var current = get_value()
 	var new = 0
-	if current < 0.5:
+	if current < 0.2:
 		new = current + dir * 0.01
-	if current < 1:
-		new = current + dir * 0.025
-	if current < 2:
-		new = current + dir * 0.05
-	if current < 4:
+	elif current < 0.5:
+		new = current + dir * 0.04
+	elif current < 1:
 		new = current + dir * 0.1
-	if current <= 8:
+	elif current < 2:
 		new = current + dir * 0.2
+	elif current < 4:
+		new = current + dir * 0.4
+	elif current <= 8:
+		new = current + dir * 0.5
 	else:
 		new = current
+	print("old = ",current)
 	set_value(new)
+	print("new = ", new)

@@ -33,7 +33,7 @@ orbitscale = 100
 [node name="TempBackground" type="Sprite" parent="Sun"]
 modulate = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
 show_behind_parent = true
-scale = Vector2( 16, 16 )
+scale = Vector2( 30, 30 )
 texture = ExtResource( 21 )
 
 [node name="Light2D" type="Light2D" parent="Sun"]
