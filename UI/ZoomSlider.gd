@@ -26,6 +26,4 @@ func change_zoom(dir):
 		new = current + dir * 0.5
 	else:
 		new = current
-	print("old = ",current)
 	set_value(new)
-	print("new = ", new)

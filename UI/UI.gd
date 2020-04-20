@@ -6,6 +6,7 @@ signal month_change()
 signal zoom_change(zoom)
 signal play_simulation()
 signal stop_simulation()
+signal toggle_grid(button_pressed)
 
 func _ready():
 	pass
@@ -67,3 +68,9 @@ func _on_Play_pressed():
 
 func _on_Fast_pressed():
 	emit_signal("play_simulation",2)
+
+################################################################################
+## Visuals
+
+func _on_CheckButton_toggled(button_pressed):
+	emit_signal("toggle_grid",button_pressed)

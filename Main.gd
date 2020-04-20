@@ -15,6 +15,10 @@ func _ready():
 	var camera = get_node("SystemViewer/ViewportContainer/Viewport/Camera2D")
 	get_node("UI").connect("zoom_change",camera,"zoom_change")
 	
+	## Static viewport connections
+	var grid = get_node("SystemViewer/ViewportContainer/FixedViewport/GridShader")
+	get_node("UI").connect("toggle_grid",grid,"toggle_grid")
+	
 	## Connecting simulation back to UI
 	
 	var control_year = get_node("UI/MarginContainer/VBoxContainer/TopContainer/TimeSelectionContainer/TimeGrid/EYear")

@@ -254,4 +254,5 @@ margin_bottom = 24.0
 [connection signal="pressed" from="MarginContainer/VBoxContainer/TopContainer/MarginContainer/VBoxContainer/HBoxContainer/Pause" to="." method="_on_Pause_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/TopContainer/MarginContainer/VBoxContainer/HBoxContainer/Play" to="." method="_on_Play_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/TopContainer/MarginContainer/VBoxContainer/HBoxContainer/Fast" to="." method="_on_Fast_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/TopContainer/VBoxContainer2/CheckButton" to="." method="_on_CheckButton_toggled"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/MiddleContainer/HBoxContainer/ZoomSlider" to="." method="_on_ZoomSlider_value_changed"]
