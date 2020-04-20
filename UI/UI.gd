@@ -2,6 +2,7 @@ extends Control
 
 signal centric_change(heliocentric)
 signal time_change()
+signal month_change()
 signal zoom_change(zoom)
 signal play_simulation()
 signal stop_simulation()
@@ -32,6 +33,7 @@ func _on_EYear_value_changed(value):
 func _on_EMonth_item_selected(id):
 	TimeSelectionShared.DMonth = id + 1
 	emit_signal("time_change")
+	emit_signal("month_change")
 
 func _on_EDay_value_changed(value):
 	TimeSelectionShared.DDay = value

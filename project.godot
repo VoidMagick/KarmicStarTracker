@@ -589,7 +589,8 @@ TimeSelectionShared="*res://Scripts/time_selection_shared.gd"
 [display]
 
 window/size/height=1024
-window/stretch/aspect="expand"
+window/handheld/orientation="portrait"
+window/stretch/aspect="keep"
 
 [input]
 

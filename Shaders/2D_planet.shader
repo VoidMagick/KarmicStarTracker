@@ -23,7 +23,7 @@ void fragment(){
 	//finalcolor += vec3(border)*outline;
 	
 	// Color that baby up
-	COLOR = vec4(finalcolor,finalalpha);
+	//COLOR = vec4(finalcolor,finalalpha);
 	
 	// Create the normal map
 	NORMALMAP.x = UV.x / (2.0*planetRadius);
