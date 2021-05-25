@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://Sun.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Planet.tscn" type="PackedScene" id=2]
@@ -21,6 +21,8 @@
 [ext_resource path="res://SolarSystem.gd" type="Script" id=19]
 [ext_resource path="res://Artwork/Icons/Vector/light_sun.svg" type="Texture" id=20]
 [ext_resource path="res://Artwork/Backgrounds/background.jpg" type="Texture" id=21]
+[ext_resource path="res://Artwork/Icons/Vector/body_moon.svg" type="Texture" id=22]
+[ext_resource path="res://Classes/Moon.gd" type="Script" id=23]
 
 [node name="SolarSystem" type="Node2D"]
 script = ExtResource( 19 )
@@ -38,7 +40,7 @@ scale = Vector2( 30, 30 )
 texture = ExtResource( 21 )
 
 [node name="Light2D" type="Light2D" parent="Sun"]
-position = Vector2( 31.9798, 0 )
+position = Vector2( 32.729, 3.37119 )
 scale = Vector2( 20, 20 )
 texture = ExtResource( 20 )
 color = Color( 1, 0.772549, 0, 1 )
@@ -64,6 +66,13 @@ position = Vector2( 13.9725, 47.9243 )
 scale = Vector2( 0.2, 0.2 )
 script = ExtResource( 11 )
 orbitscale = 100
+
+[node name="Moon" parent="." instance=ExtResource( 2 )]
+position = Vector2( 26.649, 55.0442 )
+scale = Vector2( 0.1, 0.1 )
+texture = ExtResource( 22 )
+script = ExtResource( 23 )
+orbitscale = 5000
 
 [node name="Mars" parent="." instance=ExtResource( 2 )]
 position = Vector2( 66.8017, 9.48286 )

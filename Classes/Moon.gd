@@ -5,7 +5,7 @@ func calculate_orbital_elements(d):
 	N = deg2rad(fposmod(125.1228 - 0.0529538083 * d, 360))
 	i = deg2rad(5.1454)
 	w = deg2rad(fposmod(318.0634 + 0.1643573223 * d, 360))
-	a = 60.2666
+	a = 0.002570694
 	e = 0.054900
 	M = deg2rad(fposmod(115.3654 + 13.0649929509 * d, 360))
 
@@ -31,16 +31,32 @@ func calculate_position():
 	var r = sqrt(xv*xv + yv*yv)
 	
 	# Compute the body's position in space
-	var xh = r * (cos(N) * cos(v+w) - sin(N) * sin(v+w) * cos(i))
-	var yh = r * (sin(N) * cos(v+w) + cos(N) * sin(v+w) * cos(i))
-	var zh = r * (sin(v+w) * sin(i))
+	var xg = r * (cos(N) * cos(v+w) - sin(N) * sin(v+w) * cos(i))
+	var yg = r * (sin(N) * cos(v+w) + cos(N) * sin(v+w) * cos(i))
+	var zg = r * (sin(v+w) * sin(i))
 	
-	PosREarth = Vector3(xh,yh,zh)
+	PosREarth = Vector3(xg,yg,zg)
 	
-	LongREarth = atan2(yh,xh)
-	LatREarth = atan2(zh,sqrt(xh*xh+yh*yh))
+	LongREarth = atan2(yg,xg)
+	LatREarth = atan2(zg,sqrt(xg*xg+yg*yg))
 	
 	consider_perturbations()
+	
+	# Calculate sun's position and compare
+	lonsun = TimeSelectionShared.lonsun
+	rs = TimeSelectionShared.rs
+	var xs = rs * cos(lonsun)
+	var ys = rs * sin(lonsun)
+	
+	var xh = xg - xs
+	var yh = yg - ys
+	var zh = zg
+	
+	PosRSun = Vector3(xh,yh,zh)
+	
+	# Calculate lon and lat relative to Sun
+	LongRSun = atan2(yh,xh)
+	LatRSun = atan2(zh,sqrt(xh*xh+yh*yh))
 
 func consider_perturbations():
 	

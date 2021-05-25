@@ -29,6 +29,28 @@ var zoom = TimeSelectionShared.zoom
 
 var rs = 0
 var lonsun = 0
+var astrosign = "error"
+
+var astroSigns = [
+	"Libra",
+	"Scorpio",
+	"Sagittarius",
+	"Capricorn",
+	"Aquarius",
+	"Pisces",
+	"Aries",
+	"Taurus",
+	"Gemini",
+	"Cancer",
+	"Leo",
+	"Virgo",
+	"Libra",
+]
+
+## Resultant Planetary Information
+
+################################################################################
+# Primary Calculations
 
 func _ready():
 	
@@ -51,6 +73,8 @@ func body_update(d,ecl,heliocentric,zoom):
 	calculate_orbital_elements(d)
 	calculate_position()
 	position_body(heliocentric,zoom)
+	var norm = _calc_astro_sign(LongREarth)
+	astrosign = astroSigns[norm]
 
 func calculate_position():
 	consider_perturbations()
@@ -67,5 +91,10 @@ func position_body(heliocentric,zoom):
 	else:
 		set_position(Vector2(PosREarth.x*orbitscale*(zoom/100),
 							PosREarth.y*orbitscale*(zoom/100)))
+
+func _calc_astro_sign(lon):
+	var refAngle = 0.027972
+	var normalized = int(stepify((lon+PI-refAngle)*6/PI,1))
+	return(normalized)
 
 ################################################################################

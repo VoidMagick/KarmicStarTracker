@@ -13,4 +13,4 @@ func control_update():
 	control_set_maxrange()
 
 func control_set_maxrange():
-	set_max(TimeSelectionShared.Daycount[TimeSelectionShared.DMonth])
+	set_max(TimeSelectionShared.Daycount[TimeSelectionShared.DMonth]+1)

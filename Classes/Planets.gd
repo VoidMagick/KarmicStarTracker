@@ -49,4 +49,6 @@ func calculate_position():
 	
 	PosREarth = Vector3(xg,yg,zg)
 	
-	
+	# Calculate lon and lat relative to Earth
+	LongREarth = atan2(yg,xg)
+	LatREarth = atan2(zg,sqrt(xg*xg+yg*yg))

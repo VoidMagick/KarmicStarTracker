@@ -133,16 +133,16 @@ func change_time(step):
 	## Account for underflow when moving backwards in time
 	
 	if t_hour < 0:
-		t_hour += 24
 		t_day -= 1
+		t_hour = 23
 	
 	if t_day < 1:
-		t_day += 1
 		t_month -= 1
+		t_day += Daycount[t_month]
 	
 	if t_month < 1:
-		t_month += 1
 		t_year -= 1
+		t_month = 12
 	
 	DYear = t_year
 	DMonth = t_month
